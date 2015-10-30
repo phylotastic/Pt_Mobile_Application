@@ -69,7 +69,22 @@ public class CameraTestActivity extends Activity {
 		System.loadLibrary("iconv");
 	}
 
-
+	
+	public static boolean isNumeric(String str)  
+	{  
+		  try  
+		  {  
+			  double d = Double.parseDouble(str);  
+		  }  
+		  catch(NumberFormatException nfe)  
+		  {  
+			  return false;  
+		  } catch (Exception ex){ 
+			  return false;
+		  }
+		  return true;  
+	}
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -144,6 +159,8 @@ public class CameraTestActivity extends Activity {
 
 	PreviewCallback previewCb = new PreviewCallback() {
 		
+		
+		
 		public void onPreviewFrame(byte[] data, Camera camera) {
 			Camera.Parameters parameters = camera.getParameters();
 			Size size = parameters.getPreviewSize();
@@ -163,121 +180,123 @@ public class CameraTestActivity extends Activity {
 					qr_code_id = sym.getData();
 					Log.i("QR code content", qr_code_id.toString());
 					
-					try {
-						AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraTestActivity.this);
-						builder1.setTitle("QRCode Content");
-						builder1.setMessage(qr_code_id.toString());
-						builder1.setPositiveButton("OK",
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int which) {
-										   
-										  class ProgressTask extends AsyncTask<String, Void, Boolean> {
-											  
-											    private ProgressDialog dialog;
-
-												public ProgressTask(CameraTestActivity activity) {
-													dialog = new ProgressDialog(CameraTestActivity.this);
-												}
-
-												@Override
-												protected void onPreExecute() {
-													dialog.getWindow().setBackgroundDrawable(
-															new ColorDrawable(0));
-													dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-													dialog.setIndeterminate(true);
-													dialog.setCancelable(true);
-													dialog.setMessage("Please wait");
-													dialog.show();
-												}
-												@Override
-												protected Boolean doInBackground(String... params) {
-													try {
-														//Log.i("Chay vao day", "Chay vao day");
-														ArrayList<String> lstParams = new ArrayList<String>();
-														lstParams.add(qr_code_id);
-														client = new WSExecutionClient("http://128.123.177.21:5003/WSExecution/runWSFunctionWithWSDL_json", "http://128.123.177.13/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl", lstParams, "getPhylogeneticTree");
-														phyloTree = client.sendPost();
-														return true;
-													} catch (Exception ex){
-														return false;
+					if (qr_code_id != null && !isNumeric(qr_code_id.toString())){
+						try {
+							AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraTestActivity.this);
+							builder1.setTitle("QRCode Content");
+							builder1.setMessage(qr_code_id.toString());
+							builder1.setPositiveButton("OK",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog, int which) {
+											   
+											  class ProgressTask extends AsyncTask<String, Void, Boolean> {
+												  
+												    private ProgressDialog dialog;
+	
+													public ProgressTask(CameraTestActivity activity) {
+														dialog = new ProgressDialog(CameraTestActivity.this);
 													}
-												}
-												
-												@Override
-												protected void onPostExecute(Boolean result) {
-													if (dialog != null) {
+	
+													@Override
+													protected void onPreExecute() {
+														dialog.getWindow().setBackgroundDrawable(
+																new ColorDrawable(0));
+														dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+														dialog.setIndeterminate(true);
+														dialog.setCancelable(true);
+														dialog.setMessage("Please wait");
+														dialog.show();
+													}
+													@Override
+													protected Boolean doInBackground(String... params) {
 														try {
-															dialog.dismiss();
-															AlertDialog.Builder builder = new AlertDialog.Builder(CameraTestActivity.this);
-															builder.setTitle("Newick Tree");
-															builder.setMessage(phyloTree);
-															builder.setNegativeButton("Cancel",
-																	new DialogInterface.OnClickListener() {
-																		public void onClick(DialogInterface dialog, int which) {
-																			barcodeScanned = false;
-																			scanText.setText("Scanning,Please wait...");
-																			mCamera.setPreviewCallback(previewCb);
-																			mCamera.startPreview();
-																			previewing = true;
-																			mCamera.autoFocus(autoFocusCB);
-																		}
-																	});
-															builder.setPositiveButton("View",
-																	new DialogInterface.OnClickListener() {
-																		public void onClick(DialogInterface dialog, int which) {
-																			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + phyloTree + "&format=newick_text"));
-																			startActivity(browserIntent);
-																		}
-															});
-															builder.show();
-														} catch (Exception e) {
-
+															//Log.i("Chay vao day", "Chay vao day");
+															ArrayList<String> lstParams = new ArrayList<String>();
+															lstParams.add(qr_code_id);
+															client = new WSExecutionClient("http://128.123.177.21:5003/WSExecution/runWSFunctionWithWSDL_json", "http://128.123.177.13/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl", lstParams, "getPhylogeneticTree");
+															phyloTree = client.sendPost();
+															return true;
+														} catch (Exception ex){
+															return false;
 														}
-
 													}
-												}  
+													
+													@Override
+													protected void onPostExecute(Boolean result) {
+														if (dialog != null) {
+															try {
+																dialog.dismiss();
+																AlertDialog.Builder builder = new AlertDialog.Builder(CameraTestActivity.this);
+																builder.setTitle("Newick Tree");
+																builder.setMessage(phyloTree);
+																builder.setNegativeButton("Cancel",
+																		new DialogInterface.OnClickListener() {
+																			public void onClick(DialogInterface dialog, int which) {
+																				barcodeScanned = false;
+																				scanText.setText("Scanning,Please wait...");
+																				mCamera.setPreviewCallback(previewCb);
+																				mCamera.startPreview();
+																				previewing = true;
+																				mCamera.autoFocus(autoFocusCB);
+																			}
+																		});
+																builder.setPositiveButton("View",
+																		new DialogInterface.OnClickListener() {
+																			public void onClick(DialogInterface dialog, int which) {
+																				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + phyloTree + "&format=newick_text"));
+																				startActivity(browserIntent);
+																			}
+																});
+																builder.show();
+															} catch (Exception e) {
+	
+															}
+	
+														}
+													}  
+												  
+											  }
 											  
-										  }
-										  
-										   /*
-										   ArrayList<String> params = new ArrayList<String>();
-										   params.add(qr_code_id);
-										   client = new WSExecutionClient("http://128.123.177.21:5003/WSExecution/runWSFunctionWithWSDL_json", "http://128.123.177.13/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl", params, "getPhylogeneticTree");
-										   phyloTree = client.sendPost();
-										   */
-										  
-										   new ProgressTask(CameraTestActivity.this).execute();
-										    /*
-											AlertDialog.Builder builder = new AlertDialog.Builder(CameraTestActivity.this);
-											builder.setTitle("Newick Tree");
-											builder.setMessage(phyloTree);
-											builder.setNegativeButton("Cancel",
-													new DialogInterface.OnClickListener() {
-														public void onClick(DialogInterface dialog, int which) {
-															barcodeScanned = false;
-															scanText.setText("Scanning,Please wait...");
-															mCamera.setPreviewCallback(previewCb);
-															mCamera.startPreview();
-															previewing = true;
-															mCamera.autoFocus(autoFocusCB);
-														}
-													});
-											builder.setPositiveButton("View",
-													new DialogInterface.OnClickListener() {
-														public void onClick(DialogInterface dialog, int which) {
-															Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + phyloTree + "&format=newick_text"));
-															startActivity(browserIntent);
-														}
-											});
-											builder.show();
-											*/
-									}
-						});
-						builder1.show();
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();  
+											   /*
+											   ArrayList<String> params = new ArrayList<String>();
+											   params.add(qr_code_id);
+											   client = new WSExecutionClient("http://128.123.177.21:5003/WSExecution/runWSFunctionWithWSDL_json", "http://128.123.177.13/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl", params, "getPhylogeneticTree");
+											   phyloTree = client.sendPost();
+											   */
+											  
+											   new ProgressTask(CameraTestActivity.this).execute();
+											    /*
+												AlertDialog.Builder builder = new AlertDialog.Builder(CameraTestActivity.this);
+												builder.setTitle("Newick Tree");
+												builder.setMessage(phyloTree);
+												builder.setNegativeButton("Cancel",
+														new DialogInterface.OnClickListener() {
+															public void onClick(DialogInterface dialog, int which) {
+																barcodeScanned = false;
+																scanText.setText("Scanning,Please wait...");
+																mCamera.setPreviewCallback(previewCb);
+																mCamera.startPreview();
+																previewing = true;
+																mCamera.autoFocus(autoFocusCB);
+															}
+														});
+												builder.setPositiveButton("View",
+														new DialogInterface.OnClickListener() {
+															public void onClick(DialogInterface dialog, int which) {
+																Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + phyloTree + "&format=newick_text"));
+																startActivity(browserIntent);
+															}
+												});
+												builder.show();
+												*/
+										}
+							});
+							builder1.show();
+	
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();  
+						}
 					}
 					barcodeScanned = true;
 				}
