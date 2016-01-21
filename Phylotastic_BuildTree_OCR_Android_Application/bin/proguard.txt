@@ -1,0 +1,18 @@
+# view AndroidManifest.xml #generated:22
+-keep class edu.nmsu.cs.phylotastic.ocr.CaptureActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:33
+-keep class edu.nmsu.cs.phylotastic.ocr.HelpActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:41
+-keep class edu.nmsu.cs.phylotastic.ocr.PreferencesActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:42
+-keep class edu.nmsu.cs.phylotastic.ocr.TreeViewerActivity { <init>(...); }
+
+# view res/layout/capture.xml #generated:27
+-keep class edu.nmsu.cs.phylotastic.ocr.ViewfinderView { <init>(...); }
+
+# view res/layout/capture.xml #generated:176
+-keep class edu.nmsu.cs.phylotastic.ocr.camera.ShutterButton { <init>(...); }
+
