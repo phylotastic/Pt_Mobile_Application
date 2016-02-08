@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "041EDBC81A625CEC00ECDA48"
-               BuildableName = "LoveInASnap.app"
-               BlueprintName = "LoveInASnap"
-               ReferencedContainer = "container:LoveInASnap.xcodeproj">
+               BuildableName = "Phylotastic OCR Build Tree.app"
+               BlueprintName = "Phylotastic OCR Build Tree"
+               ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,27 +29,27 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "041EDBDD1A625CED00ECDA48"
-               BuildableName = "LoveInASnapTests.xctest"
-               BlueprintName = "LoveInASnapTests"
-               ReferencedContainer = "container:LoveInASnap.xcodeproj">
+               BuildableName = "Phylotastic OCR Build Tree.xctest"
+               BlueprintName = "Phylotastic OCR Build TreeTests"
+               ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      buildConfiguration = "Debug">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "041EDBDD1A625CED00ECDA48"
-               BuildableName = "LoveInASnapTests.xctest"
-               BlueprintName = "LoveInASnapTests"
-               ReferencedContainer = "container:LoveInASnap.xcodeproj">
+               BuildableName = "Phylotastic OCR Build Tree.xctest"
+               BlueprintName = "Phylotastic OCR Build TreeTests"
+               ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,48 +57,51 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "041EDBC81A625CEC00ECDA48"
-            BuildableName = "LoveInASnap.app"
-            BlueprintName = "LoveInASnap"
-            ReferencedContainer = "container:LoveInASnap.xcodeproj">
+            BuildableName = "Phylotastic OCR Build Tree.app"
+            BlueprintName = "Phylotastic OCR Build Tree"
+            ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
+      <AdditionalOptions>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Debug"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "041EDBC81A625CEC00ECDA48"
-            BuildableName = "LoveInASnap.app"
-            BlueprintName = "LoveInASnap"
-            ReferencedContainer = "container:LoveInASnap.xcodeproj">
+            BuildableName = "Phylotastic OCR Build Tree.app"
+            BlueprintName = "Phylotastic OCR Build Tree"
+            ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "041EDBC81A625CEC00ECDA48"
-            BuildableName = "LoveInASnap.app"
-            BlueprintName = "LoveInASnap"
-            ReferencedContainer = "container:LoveInASnap.xcodeproj">
+            BuildableName = "Phylotastic OCR Build Tree.app"
+            BlueprintName = "Phylotastic OCR Build Tree"
+            ReferencedContainer = "container:Phylotastic OCR Build Tree.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

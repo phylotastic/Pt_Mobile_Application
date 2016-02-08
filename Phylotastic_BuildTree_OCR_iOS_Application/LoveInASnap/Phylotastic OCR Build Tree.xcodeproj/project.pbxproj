@@ -33,14 +33,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		041EDBC91A625CEC00ECDA48 /* LoveInASnap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveInASnap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		041EDBC91A625CEC00ECDA48 /* Phylotastic OCR Build Tree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Phylotastic OCR Build Tree.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		041EDBCD1A625CEC00ECDA48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		041EDBCE1A625CEC00ECDA48 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		041EDBD01A625CEC00ECDA48 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		041EDBD31A625CEC00ECDA48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		041EDBD51A625CEC00ECDA48 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		041EDBD81A625CEC00ECDA48 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		041EDBDE1A625CED00ECDA48 /* LoveInASnapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LoveInASnapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		041EDBDE1A625CED00ECDA48 /* Phylotastic OCR Build Tree.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Phylotastic OCR Build Tree.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		041EDBE31A625CED00ECDA48 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		041EDBE41A625CED00ECDA48 /* LoveInASnapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoveInASnapTests.swift; sourceTree = "<group>"; };
 		041EDBEE1A625D9200ECDA48 /* Envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Envelope.png; sourceTree = "<group>"; };
@@ -92,8 +92,8 @@
 		041EDBCA1A625CEC00ECDA48 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				041EDBC91A625CEC00ECDA48 /* LoveInASnap.app */,
-				041EDBDE1A625CED00ECDA48 /* LoveInASnapTests.xctest */,
+				041EDBC91A625CEC00ECDA48 /* Phylotastic OCR Build Tree.app */,
+				041EDBDE1A625CED00ECDA48 /* Phylotastic OCR Build Tree.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -143,9 +143,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		041EDBC81A625CEC00ECDA48 /* LoveInASnap */ = {
+		041EDBC81A625CEC00ECDA48 /* Phylotastic OCR Build Tree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 041EDBE81A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "LoveInASnap" */;
+			buildConfigurationList = 041EDBE81A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "Phylotastic OCR Build Tree" */;
 			buildPhases = (
 				041EDBC51A625CEC00ECDA48 /* Sources */,
 				041EDBC61A625CEC00ECDA48 /* Frameworks */,
@@ -155,14 +155,14 @@
 			);
 			dependencies = (
 			);
-			name = LoveInASnap;
+			name = "Phylotastic OCR Build Tree";
 			productName = LoveInASnap;
-			productReference = 041EDBC91A625CEC00ECDA48 /* LoveInASnap.app */;
+			productReference = 041EDBC91A625CEC00ECDA48 /* Phylotastic OCR Build Tree.app */;
 			productType = "com.apple.product-type.application";
 		};
-		041EDBDD1A625CED00ECDA48 /* LoveInASnapTests */ = {
+		041EDBDD1A625CED00ECDA48 /* Phylotastic OCR Build TreeTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 041EDBEB1A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "LoveInASnapTests" */;
+			buildConfigurationList = 041EDBEB1A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "Phylotastic OCR Build TreeTests" */;
 			buildPhases = (
 				041EDBDA1A625CED00ECDA48 /* Sources */,
 				041EDBDB1A625CED00ECDA48 /* Frameworks */,
@@ -173,9 +173,9 @@
 			dependencies = (
 				041EDBE01A625CED00ECDA48 /* PBXTargetDependency */,
 			);
-			name = LoveInASnapTests;
+			name = "Phylotastic OCR Build TreeTests";
 			productName = LoveInASnapTests;
-			productReference = 041EDBDE1A625CED00ECDA48 /* LoveInASnapTests.xctest */;
+			productReference = 041EDBDE1A625CED00ECDA48 /* Phylotastic OCR Build Tree.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -197,7 +197,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 041EDBC41A625CEC00ECDA48 /* Build configuration list for PBXProject "LoveInASnap" */;
+			buildConfigurationList = 041EDBC41A625CEC00ECDA48 /* Build configuration list for PBXProject "Phylotastic OCR Build Tree" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -210,8 +210,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				041EDBC81A625CEC00ECDA48 /* LoveInASnap */,
-				041EDBDD1A625CED00ECDA48 /* LoveInASnapTests */,
+				041EDBC81A625CEC00ECDA48 /* Phylotastic OCR Build Tree */,
+				041EDBDD1A625CED00ECDA48 /* Phylotastic OCR Build TreeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -263,7 +263,7 @@
 /* Begin PBXTargetDependency section */
 		041EDBE01A625CED00ECDA48 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 041EDBC81A625CEC00ECDA48 /* LoveInASnap */;
+			target = 041EDBC81A625CEC00ECDA48 /* Phylotastic OCR Build Tree */;
 			targetProxy = 041EDBDF1A625CED00ECDA48 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -385,7 +385,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_BUNDLE_IDENTIFIER = org.phylotastic.OCRBuilTree;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Phylotastic OCR Build Tree";
 				PROVISIONING_PROFILE = "a5d8a7d3-b663-4668-8f5c-6796fdc7bf7a";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoveInASnap-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -413,7 +413,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_BUNDLE_IDENTIFIER = org.phylotastic.OCRBuilTree;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Phylotastic OCR Build Tree";
 				PROVISIONING_PROFILE = "a5d8a7d3-b663-4668-8f5c-6796fdc7bf7a";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoveInASnap-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -434,8 +434,8 @@
 				);
 				INFOPLIST_FILE = LoveInASnapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoveInASnap.app/LoveInASnap";
+				PRODUCT_NAME = "Phylotastic OCR Build Tree";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Phylotastic OCR Build Tree.app/Phylotastic OCR Build Tree";
 			};
 			name = Debug;
 		};
@@ -449,15 +449,15 @@
 				);
 				INFOPLIST_FILE = LoveInASnapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LoveInASnap.app/LoveInASnap";
+				PRODUCT_NAME = "Phylotastic OCR Build Tree";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Phylotastic OCR Build Tree.app/Phylotastic OCR Build Tree";
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		041EDBC41A625CEC00ECDA48 /* Build configuration list for PBXProject "LoveInASnap" */ = {
+		041EDBC41A625CEC00ECDA48 /* Build configuration list for PBXProject "Phylotastic OCR Build Tree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				041EDBE61A625CED00ECDA48 /* Debug */,
@@ -466,7 +466,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		041EDBE81A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "LoveInASnap" */ = {
+		041EDBE81A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "Phylotastic OCR Build Tree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				041EDBE91A625CED00ECDA48 /* Debug */,
@@ -475,7 +475,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		041EDBEB1A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "LoveInASnapTests" */ = {
+		041EDBEB1A625CED00ECDA48 /* Build configuration list for PBXNativeTarget "Phylotastic OCR Build TreeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				041EDBEC1A625CED00ECDA48 /* Debug */,
