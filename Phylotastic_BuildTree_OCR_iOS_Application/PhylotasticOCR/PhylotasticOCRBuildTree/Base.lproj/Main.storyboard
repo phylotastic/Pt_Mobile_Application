@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="LoveInASnap" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="Phylotastic_OCR_Build_Tree" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TyZ-Rd-pJC"/>
                         <viewControllerLayoutGuide type="bottom" id="03X-da-6SF"/>
@@ -28,17 +28,17 @@
                                     <action selector="backgroundTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="cZ6-qc-X9S"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Snap/upload a clear picture of your Camera/ Photos. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="12" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="6ma-5u-o2n">
-                                <rect key="frame" x="6" y="30" width="309" height="49"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Phylotastic OCR Build Tree from your picture" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="12" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="6ma-5u-o2n">
+                                <rect key="frame" x="6" y="30" width="309" height="29"/>
                                 <fontDescription key="fontDescription" name="Cochin" family="Cochin" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3C8-6d-WmS">
-                                <rect key="frame" x="36" y="88" width="248" height="221"/>
+                                <rect key="frame" x="36" y="88" width="248" height="209"/>
                                 <subviews>
-                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVg-ev-ijX">
-                                        <rect key="frame" x="1" y="1" width="246" height="219"/>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LVg-ev-ijX">
+                                        <rect key="frame" x="1" y="0.0" width="246" height="203"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -57,36 +57,41 @@
                                     <constraint firstAttribute="bottom" secondItem="LVg-ev-ijX" secondAttribute="bottom" constant="1" id="gdx-DP-vDF"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="InM-Rb-jXE">
-                                <rect key="frame" x="87" y="339" width="147" height="30"/>
-                                <fontDescription key="fontDescription" name="Cochin-Bold" family="Cochin" pointSize="15"/>
-                                <state key="normal" title="Snap/Upload a picture">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="takePhoto:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="6T0-wI-NsH"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yod-if-hMK">
-                                <rect key="frame" x="87" y="377" width="147" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yod-if-hMK">
+                                <rect key="frame" x="6" y="538" width="142" height="30"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
-                                <state key="normal" title="View Tree Normal"/>
+                                <state key="normal" title="Step 3 : View Tree "/>
                                 <connections>
                                     <action selector="viewTree_WS:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="zYR-rs-Udx"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s0t-OQ-wWt">
-                                <rect key="frame" x="70" y="415" width="176" height="30"/>
-                                <state key="normal" title="View Tree OneZoom V1"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2dF-5l-2Yc">
+                                <rect key="frame" x="184" y="538" width="131" height="30"/>
+                                <state key="normal" title="Clear Text Content"/>
                                 <connections>
-                                    <action selector="viewTree_WS_OneZoom:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="70s-S6-htq"/>
+                                    <action selector="clearTextView:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="1Hg-F8-ETr"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d54-l8-cnq">
-                                <rect key="frame" x="64" y="453" width="191" height="30"/>
-                                <state key="normal" title="View Tree OneZoom V2"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cyO-u0-y2z">
+                                <rect key="frame" x="6" y="337" width="309" height="155"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M4j-js-GGr">
+                                <rect key="frame" x="48" y="299" width="231" height="35"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Step 1 : Snap/Upload a picture"/>
                                 <connections>
-                                    <action selector="viewTree_WS_OneZoom_V2:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Ohi-Fg-CzD"/>
+                                    <action selector="takePhoto:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="pj0-Aj-1qe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gc3-Hh-5d8">
+                                <rect key="frame" x="53" y="492" width="214" height="38"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Step 2 : Build Tree"/>
+                                <connections>
+                                    <action selector="buildTree_WS:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="DVf-0R-N0q"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -98,8 +103,6 @@
                             <constraint firstItem="6ma-5u-o2n" firstAttribute="leading" secondItem="Pm6-fr-Yvv" secondAttribute="leadingMargin" constant="10" id="TTv-fe-RO6"/>
                             <constraint firstItem="BSw-gM-CTX" firstAttribute="top" secondItem="Pm6-fr-Yvv" secondAttribute="top" id="YMC-bm-gcr"/>
                             <constraint firstAttribute="trailing" secondItem="BSw-gM-CTX" secondAttribute="trailing" id="YgM-pL-Y8O"/>
-                            <constraint firstItem="InM-Rb-jXE" firstAttribute="centerX" secondItem="BSw-gM-CTX" secondAttribute="centerX" id="aRN-S1-Gmx"/>
-                            <constraint firstItem="InM-Rb-jXE" firstAttribute="top" secondItem="3C8-6d-WmS" secondAttribute="bottom" constant="30" id="cyP-rk-1S5"/>
                             <constraint firstItem="BSw-gM-CTX" firstAttribute="leading" secondItem="Pm6-fr-Yvv" secondAttribute="leading" id="tRI-ZL-9qv"/>
                             <constraint firstAttribute="centerX" secondItem="3C8-6d-WmS" secondAttribute="centerX" id="tyq-35-cmI"/>
                             <constraint firstItem="03X-da-6SF" firstAttribute="top" secondItem="BSw-gM-CTX" secondAttribute="bottom" id="xlN-o0-UGu"/>
@@ -108,6 +111,7 @@
                     <connections>
                         <outlet property="textView" destination="LVg-ev-ijX" id="hkC-pT-NGf"/>
                         <outlet property="topMarginConstraint" destination="AOU-ke-QZo" id="3De-8G-85L"/>
+                        <outlet property="treeTextView" destination="cyO-u0-y2z" id="oLT-7L-lu6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>

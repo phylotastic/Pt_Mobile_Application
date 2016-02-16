@@ -16,6 +16,8 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
   @IBOutlet weak var findTextField: UITextField!
   @IBOutlet weak var replaceTextField: UITextField!
   @IBOutlet weak var topMarginConstraint: NSLayoutConstraint!
+  @IBOutlet weak var treeTextView: UITextView!
+   
   
   var activityIndicator:UIActivityIndicatorView!
   var originalTopMargin:CGFloat!
@@ -80,61 +82,115 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
     
   }
   
-  @IBAction func viewTree_WS_OneZoom(sender : AnyObject) {
-    print("Open Web Browser to View Tree")
-    
-    var treeDataText = self.textView.text
-    
-    treeDataText = treeDataText.stringByTrimmingCharactersInSet(
-      NSCharacterSet.whitespaceAndNewlineCharacterSet()
-    )
-    
-    print("Tree data : " + treeDataText)
-    
-    let strURL = "http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree_onezoom_v1.html?uri=&tree_data=" + treeDataText + "&format=newick_text"
-    
-    print("URL : " + strURL)
-    
-    let url = NSURL(string: strURL)!
-    UIApplication.sharedApplication().openURL(url)
-  }
-  
-  @IBAction func viewTree_WS_OneZoom_V2(sender : AnyObject) {
-    print("Open Web Browser to View Tree")
-    
-    var treeDataText = self.textView.text
-    
-    treeDataText = treeDataText.stringByTrimmingCharactersInSet(
-      NSCharacterSet.whitespaceAndNewlineCharacterSet()
-    )
-    
-    print("Tree data : " + treeDataText)
-    
-    let strURL = "http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree_onezoom_v2.html?uri=&tree_data=" + treeDataText + "&format=newick_text"
-    
-    print("URL : " + strURL)
-    
-    let url = NSURL(string: strURL)!
-    UIApplication.sharedApplication().openURL(url)
-  }
   
   @IBAction func viewTree_WS(sender : AnyObject) {
       print("Open Web Browser to View Tree")
     
-      var treeDataText = self.textView.text
-    
+      var treeDataText = self.treeTextView.text
       treeDataText = treeDataText.stringByTrimmingCharactersInSet(
-        NSCharacterSet.whitespaceAndNewlineCharacterSet()
+         NSCharacterSet.whitespaceAndNewlineCharacterSet()
       )
+      print("Tree data : |" + treeDataText + "|")
+
+      if (treeDataText == "Error in request to Server"){
+        let refreshAlert = UIAlertController(title: "Phylotastic", message: "Tree Data is invalid.", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+          return;
+        }))
+        
+        presentViewController(refreshAlert, animated: true, completion: nil)
+      } else if (treeDataText == "List of resolved names empty") {
+        let refreshAlert = UIAlertController(title: "Phylotastic", message: "Tree Data is Empty.", preferredStyle: UIAlertControllerStyle.Alert)
+        
+        refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+          return;
+        }))
+        
+        presentViewController(refreshAlert, animated: true, completion: nil)
+        
+      } else {
+        treeDataText = treeDataText.stringByTrimmingCharactersInSet(
+          NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        )
+        
+        print("Tree data : " + treeDataText)
+        
+        let strURL = "http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + treeDataText + "&format=newick_text"
+        
+        print("URL : " + strURL)
+        
+        let url = NSURL(string: strURL)!
+        UIApplication.sharedApplication().openURL(url)
+      }
     
-      print("Tree data : " + treeDataText)
     
-      let strURL = "http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=" + treeDataText + "&format=newick_text"
     
-      print("URL : " + strURL)
+  }
+  
+  @IBAction func clearTextView(sender : AnyObject) {
+    textView.text = ""
+  }
+  
+  @IBAction func buildTree_WS(sender : AnyObject) {
+    print("Call Web Serivice to Build Tree");
     
-      let url = NSURL(string: strURL)!
-      UIApplication.sharedApplication().openURL(url)
+    if (textView.text.isEmpty){
+      let refreshAlert = UIAlertController(title: "Phylotastic", message: "Text Data is Empty. Please Snap or Upload correct image.", preferredStyle: UIAlertControllerStyle.Alert)
+      
+      refreshAlert.addAction(UIAlertAction(title: "Ok", style: .Default, handler: { (action: UIAlertAction!) in
+        return;
+      }))
+      
+      presentViewController(refreshAlert, animated: true, completion: nil)
+    } else {
+    
+        addActivityIndicator()
+        let request = NSMutableURLRequest(URL: NSURL(string: "http://phylo.cs.nmsu.edu:5003/WSExecution/runWSFunctionWithWSDL_wwwEncode")!)
+        request.HTTPMethod = "POST"
+      
+        let ocrText = textView.text
+    
+        let data = ocrText.stringByTrimmingCharactersInSet(
+          NSCharacterSet.whitespaceAndNewlineCharacterSet()
+        )
+    
+        let postString = "ws_function_name=getPhylogeneticTree&ws_wsdl_url=http://phylo.cs.nmsu.edu:8080/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl&ws_input_params=" + data
+    
+        print ("Request  : " + postString)
+        request.HTTPBody = postString.dataUsingEncoding(NSUTF8StringEncoding)
+    
+        let task = NSURLSession.sharedSession().dataTaskWithRequest(request) { data, response, error in
+            guard error == nil && data != nil else {                                                          // check for fundamental networking error
+                print("error=\(error)")
+              return
+            }
+      
+            if let httpStatus = response as? NSHTTPURLResponse where httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //self.textView.text = "Error in request to Server"
+                    self.treeTextView.text = "Error in request to Server"
+                    self.self.removeActivityIndicator()
+                  })
+              } else {
+        
+                let responseString = NSString(data: data!, encoding: NSUTF8StringEncoding)
+                //print("responseString == \(responseString)")
+                let correctResponse = responseString! as String
+                print("response2 == " + (responseString! as String))
+        
+                //print("New String == " + newString!)
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    //self.textView.text = correctResponse
+                    self.treeTextView.text = correctResponse
+                    self.self.removeActivityIndicator()
+                })
+            }
+        }
+        task.resume()
+    }
     
   }
   
@@ -218,7 +274,8 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
     // 1
     let tesseract = G8Tesseract()
     // 2
-    tesseract.language = "eng+fra"
+    //tesseract.language = "eng+fra"
+    tesseract.language = "eng"
     // 3
     tesseract.engineMode = .TesseractCubeCombined
     // 4
@@ -228,14 +285,18 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
     // 6
     tesseract.image = image.g8_blackAndWhite()
     tesseract.recognize()
+    
+    let ocrText = tesseract.recognizedText.stringByTrimmingCharactersInSet(
+      NSCharacterSet.whitespaceAndNewlineCharacterSet()
+    )
     // 7
-    textView.text = tesseract.recognizedText
+    textView.text = textView.text + " " + ocrText
     //Run Web Service to Find Tree from Text
+    /*
     print("Call Web Serivice to Build Tree");
     
     let request = NSMutableURLRequest(URL: NSURL(string: "http://128.123.177.21:5003/WSExecution/runWSFunctionWithWSDL_wwwEncode")!)
     request.HTTPMethod = "POST"
-    //let postString = "{\"ws_function_name\":\"getPhylogeneticTree\", \"ws_wsdl_url\":\"http://128.123.177.13/WSRegistry/sites/default/files/wsdl/usecase2_workflow1_text.wsdl\",\"ws_input_params\":[\"" + ocrText + "\"]}"
     
     let ocrText = tesseract.recognizedText
     
@@ -276,8 +337,9 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
       }
     }
     task.resume()
+    */
     
-    //removeActivityIndicator()
+    removeActivityIndicator()
     
     textView.editable = true
     // 8

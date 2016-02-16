@@ -20,6 +20,7 @@
 		2F1EE01B1BC9EC74009EC476 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 2F1EE01A1BC9EC74009EC476 /* tessdata */; };
 		2F1EE01D1BC9ED38009EC476 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1EE01C1BC9ED38009EC476 /* libstdc++.dylib */; };
 		2F1EE01F1BC9ED45009EC476 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2F1EE01E1BC9ED45009EC476 /* CoreImage.framework */; };
+		2FF1B98A1C727E0E00D9AB86 /* TreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF1B9891C727E0E00D9AB86 /* TreeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		2F1EE01C1BC9ED38009EC476 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "usr/lib/libstdc++.dylib"; sourceTree = SDKROOT; };
 		2F1EE01E1BC9ED45009EC476 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
 		2F1EE0201BC9EE7E009EC476 /* LoveInASnap-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "LoveInASnap-Bridging-Header.h"; sourceTree = "<group>"; };
+		2FF1B9891C727E0E00D9AB86 /* TreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TreeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				041EDBD51A625CEC00ECDA48 /* Images.xcassets */,
 				041EDBD71A625CEC00ECDA48 /* LaunchScreen.xib */,
 				041EDBCC1A625CEC00ECDA48 /* Supporting Files */,
+				2FF1B9891C727E0E00D9AB86 /* TreeViewController.swift */,
 			);
 			path = LoveInASnap;
 			sourceTree = "<group>";
@@ -190,6 +193,7 @@
 				TargetAttributes = {
 					041EDBC81A625CEC00ECDA48 = {
 						CreatedOnToolsVersion = 6.1.1;
+						DevelopmentTeam = A6N6QQ26RK;
 					};
 					041EDBDD1A625CED00ECDA48 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -246,6 +250,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				041EDBD11A625CEC00ECDA48 /* ViewController.swift in Sources */,
+				2FF1B98A1C727E0E00D9AB86 /* TreeViewController.swift in Sources */,
 				041EDBCF1A625CEC00ECDA48 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,6 +376,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Thanh Nguyen hai (A6N6QQ26RK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Thanh Nguyen hai (A6N6QQ26RK)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -386,7 +393,7 @@
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_BUNDLE_IDENTIFIER = org.phylotastic.OCRBuilTree;
 				PRODUCT_NAME = "Phylotastic OCR Build Tree";
-				PROVISIONING_PROFILE = "a5d8a7d3-b663-4668-8f5c-6796fdc7bf7a";
+				PROVISIONING_PROFILE = "7efee869-b25e-4760-a16c-cfb93bc4c048";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoveInASnap-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -399,6 +406,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LIBRARY = "compiler-default";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Thanh Nguyen hai (A6N6QQ26RK)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Thanh Nguyen hai (A6N6QQ26RK)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -414,7 +423,7 @@
 				OTHER_LDFLAGS = "-lstdc++";
 				PRODUCT_BUNDLE_IDENTIFIER = org.phylotastic.OCRBuilTree;
 				PRODUCT_NAME = "Phylotastic OCR Build Tree";
-				PROVISIONING_PROFILE = "a5d8a7d3-b663-4668-8f5c-6796fdc7bf7a";
+				PROVISIONING_PROFILE = "7efee869-b25e-4760-a16c-cfb93bc4c048";
 				SWIFT_OBJC_BRIDGING_HEADER = "LoveInASnap-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 			};
