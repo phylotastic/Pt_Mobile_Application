@@ -20,7 +20,7 @@ class ViewController: UIViewController, UITextViewDelegate, UINavigationControll
   @IBOutlet weak var treeTextView: UITextView!
   
   let OCR_TOOL = "GOOGLE_CLOUD_VISION_API"
-  var API_KEY = "AIzaSyA-6xVFstqpFhFwOTYfJlHoRVgj9buA4oY"
+
   
   var activityIndicator:UIActivityIndicatorView!
   var originalTopMargin:CGFloat!
