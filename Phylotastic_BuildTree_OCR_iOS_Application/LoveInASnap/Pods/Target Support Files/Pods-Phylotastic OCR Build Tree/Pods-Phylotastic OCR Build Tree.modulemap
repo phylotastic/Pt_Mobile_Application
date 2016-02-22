@@ -1,0 +1,6 @@
+framework module Pods_Phylotastic_OCR_Build_Tree {
+  umbrella header "Pods-Phylotastic OCR Build Tree-umbrella.h"
+
+  export *
+  module * { export * }
+}
