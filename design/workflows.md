@@ -86,7 +86,7 @@ One student, prior to launching the app, takes 12 images, which are now availabl
 
 User is managing two lists.  One of them is only for birds, the other for mammals.    This is what the list-master will look like when the user is done: 
 
-![List-master view](list-master.png)
+![List-master view](list_master.png)
 
 * user launches app
 * user selects the list-master icon in the bottom nav strip
