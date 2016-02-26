@@ -2,6 +2,10 @@
 
 ## Quick overview of interface elements and processes 
 
+### Live mockup
+
+This will make a lot more sense if you check out the [live mock-up](http://lumzy.com/access/?id=9F68634BA781D0C704832865D01C6BEC) first. 
+
 ### A note about the gallery
 My vision for the gallery is that every registered user of phylotastic apps has a personal gallery that we maintain on a networked server, consisting of records with UIDs that include the actual tree structure, the provenance, and a view.  The web toolbox, the mobile app, and other apps will access the gallery.  When the user launches an app for the first time, they will be asked to log in or register for an account.  The app's gallery will then be populated with the user's online gallery (or it will be empty for unregistered users).  So, for instance, if a user had 20 trees in her gallery from using the web toolbox, these would be visible the first time she logs in.  
 
