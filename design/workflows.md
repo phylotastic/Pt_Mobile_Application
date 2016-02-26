@@ -84,7 +84,7 @@ One student, prior to launching the app, takes 12 images, which are now availabl
 
 ## Use case - managing multiple lists
 
-User is managing two lists.  One of them is only for birds, the other for mammals.    This is what the list-master will look like when the user is done: 
+User is managing two lists.  One of them is only for birds, the other for mammals.    This is what the list-master might look like for this user: 
 
 ![List-master view](list_master.png)
 
