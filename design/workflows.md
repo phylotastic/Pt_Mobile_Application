@@ -45,6 +45,8 @@ Students are assigned to collect 12 species to make a tree.  The aim is to get a
    * user selects twitter, adds comment, clicks post
       * --> tree is posted to personal phylotastic gallery 
       * --> tree is posted to twitter with comment
+
+![Workflow 1](workflow1.jpg)
          
 ### Variations on Workflow 1
 
