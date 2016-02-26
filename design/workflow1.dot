@@ -1,0 +1,11 @@
+digraph "mobile app workflow 1" { 
+image [label="get\nimage"];
+list [label="species\nlist"];
+tree [label="tree\nviewer"];
+launch -> gallery -> image;
+image -> list [label="OCR\n+GNRD"]; 
+list -> image [label="add\nmore"]; 
+list -> list [label="edit"]; 
+list -> tree -> share; 
+gallery -> tutorial -> gallery;
+}
