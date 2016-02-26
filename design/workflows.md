@@ -21,7 +21,7 @@ The following views extend the functionality considerably
 
 In particular, the taxon view turns the app into a museum guide even if the phylogeny feature is not used.  
 
-## Workflow 1 - Field trip
+## Use case - Field trip
 
 Assume middle-school or higher level.  The students are brought into an area with a variety of species represented in displays with signage.  This might be an entire zoo, the mammal room at the museum, or even just a collection of herbarium sheets.  
 
@@ -78,7 +78,7 @@ One student, prior to launching the app, takes 12 images, which are now availabl
          * user doesn't like photo, chooses "cancel" 
             * --> return to List view
 
-## Workflow 2 - managing multiple lists
+## Use case - managing multiple lists
 
 User is managing two lists.  One of them is only for birds, the other for mammals.    This is what the list-master will look like when the user is done: 
 
