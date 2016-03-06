@@ -1,0 +1,14 @@
+digraph "mobile app MVP workflow1" { 
+rank=same;
+SP [label="Source\npicker"];
+Image [label="Image\nview"];
+Home [label="List-\nmaster\n= home"];
+List [label="List\nview"];
+Tree [label="Tree\nview"];
+Home -> SP [label=" choose to\ncapture"];
+SP -> Image [label=" choose\ncamera\nor lib"];
+# Image -> SP [label="cancel"];
+Image -> List [label="OCR-->list"];
+List -> SP [label=" get\nmore"];
+List -> Tree; 
+}
