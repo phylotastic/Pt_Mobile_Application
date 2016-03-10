@@ -1,0 +1,14 @@
+.tab_border{
+    border-right:1px solid grey;
+    border-down:1px solid grey;
+    border-up:px solid grey;
+}
+
+.tab_selected {
+	color:blue; 
+	font-weight: bold;
+}
+
+.my-custome-popup { 
+   .popup {width: 1200px !important; height: 350px;}
+ }

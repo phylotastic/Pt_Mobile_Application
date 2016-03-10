@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="js/|cordova-js-src/|cordova-js-src/android/|plugins/cordova-plugin-whitelist/|cordova-js-src/plugin/android/" kind="src" path="platforms/android/assets/www"/>
+	<classpathentry excluding="android/|plugin/android/" kind="src" path="platforms/android/assets/www/cordova-js-src"/>
+	<classpathentry kind="src" path="platforms/android/assets/www/cordova-js-src/android"/>
+	<classpathentry kind="src" path="platforms/android/assets/www/cordova-js-src/plugin/android"/>
+	<classpathentry kind="src" path="platforms/android/assets/www/js"/>
+	<classpathentry kind="src" path="platforms/android/assets/www/plugins/cordova-plugin-whitelist"/>
+	<classpathentry kind="src" path="platforms/android/cordova/lib"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/nopt/lib"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/nopt/node_modules/abbrev"/>
+	<classpathentry excluding="benchmark/" kind="src" path="platforms/android/cordova/node_modules/q"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/q/benchmark"/>
+	<classpathentry excluding="scripts/|src/" kind="src" path="platforms/android/cordova/node_modules/shelljs"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/shelljs/scripts"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/shelljs/src"/>
+	<classpathentry kind="src" path="platforms/android/cordova/node_modules/which"/>
+	<classpathentry excluding="cordova-js-src/|cordova-js-src/plugin/android/|cordova-js-src/android/" kind="src" path="platforms/android/platform_www"/>
+	<classpathentry excluding="plugin/android/|android/" kind="src" path="platforms/android/platform_www/cordova-js-src"/>
+	<classpathentry kind="src" path="platforms/android/platform_www/cordova-js-src/android"/>
+	<classpathentry kind="src" path="platforms/android/platform_www/cordova-js-src/plugin/android"/>
+	<classpathentry kind="src" path="platforms/ios/cordova/lib"/>
+	<classpathentry kind="src" path="platforms/ios/cordova/node_modules/nopt/lib"/>
+	<classpathentry kind="src" path="platforms/ios/cordova/node_modules/nopt/node_modules/abbrev"/>
+	<classpathentry kind="src" path="platforms/ios/cordova/node_modules/q"/>
+	<classpathentry kind="src" path="platforms/ios/cordova/node_modules/shelljs"/>
+	<classpathentry kind="src" path="platforms/ios/CordovaLib"/>
+	<classpathentry excluding="cordova-js-src/" kind="src" path="platforms/ios/platform_www"/>
+	<classpathentry kind="src" path="platforms/ios/platform_www/cordova-js-src"/>
+	<classpathentry excluding="js/|cordova-js-src/" kind="src" path="platforms/ios/www"/>
+	<classpathentry kind="src" path="platforms/ios/www/cordova-js-src"/>
+	<classpathentry kind="src" path="platforms/ios/www/js"/>
+	<classpathentry kind="src" path="plugins/cordova-plugin-whitelist"/>
+	<classpathentry kind="src" path="www/js"/>
+	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path=""/>
+</classpath>
