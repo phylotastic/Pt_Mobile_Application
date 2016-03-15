@@ -7,5 +7,5 @@ Mobile Application for Phylotastic Project
 1. repeat steps 1 and 2 as needed, adding to list of names
 1. get a phylogeny for the list of species 
 
-![Splash screen](design/splash2.png "Splash screen")
+![Splash screen](design/splash2.png=200x "Splash screen")
 ![app icon](design/app_icon.png "app icon")
