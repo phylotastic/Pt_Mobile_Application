@@ -1,9 +1,10 @@
 # Phylotastic_Mobile_Application
 
 Mobile Application for Phylotastic Project
+
 1. take a photo of printed or engraved names (e.g., from museum signage)
-2. extract names using OCR
-3. repeat steps 1 and 2 as needed, adding to list of names
-4. get a phylogeny for the list of species 
+1. extract names using OCR
+1. repeat steps 1 and 2 as needed, adding to list of names
+1. get a phylogeny for the list of species 
 
-
+![app icon](design/app_icon.png "app icon")
