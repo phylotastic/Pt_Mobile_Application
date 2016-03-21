@@ -1,3 +1,38 @@
+
+
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+};
+
+
+function getMaxID(JSON_LIST) {
+	var maxID = 0;
+	for(var index = 0 ; index < JSON_LIST.length ; index++){
+		if (JSON_LIST[index].id > maxID){
+			maxID = JSON_LIST[index].id;
+		}
+	}
+	return maxID;
+}
+
+function update_object_of_master_list(species_list_object, species_names_list){
+	species_list_object.species = species_names_list;
+	species_list_object.quantity = species_names_list.length;
+	//console.log(species_list_object);
+}
+
+function update_master_list(species_list_object, master_list){
+	for(var index = 0 ; index < master_list.length ; index++){
+		if (species_list_object.id === master_list[index].id){
+			master_list[index] = species_list_object;
+		}
+	}
+	//console.log(master_list[0]);
+}
+
 function checkNetConnection(){
 	 var xhr = new XMLHttpRequest();
 	 //var file = "http://api.landpotential.org";

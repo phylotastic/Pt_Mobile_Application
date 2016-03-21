@@ -1,6 +1,10 @@
 @charset "UTF-8";
 /* CSS Document */
 
+.mynavbar{
+	height: 40px !important;
+}
+
 .common-body {
 	background-color: #EBEBEB;
 	color: black;

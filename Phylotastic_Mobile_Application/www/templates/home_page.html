@@ -1,11 +1,13 @@
 <link href="css/common.css" rel="stylesheet">
 <ion-view hide-back-button="true" cache-view="false">
-  <ion-nav-title>
+  <ion-nav-buttons side="left" style="color: grey;">
       <a class="button button-icon icon ion-navicon" ui-sref="#"></a>
+  </ion-nav-buttons>
+  <ion-nav-title>
       <h1 class="title">Phylotastic</h1>
   </ion-nav-title>
   <ion-nav-buttons side="right" style="color: grey;">
-        <a class="button button-icon ion-plus-round" ui-sref="#"></a>
+        <a class="button button-icon ion-plus-round" ng-click="addNewMasterList();"></a>
 	    <a class="button button-icon ion-gear-b" ui-sref="#"></a>
 	 </ion-nav-buttons>          
   <ion-content class="padding common-body" overflow-scroll="true">
@@ -18,8 +20,10 @@
                  <input type="checkbox" ng-click="checkSpeciesList(species_list); $event.stopPropagation();" ng-model="species_list.checked">
               </label>
 			  -->
-			  {{species_list.species_list_name}}
-			
+			  <label class="item-input"> 
+	   				 <span style="width:80%;text-align:left">{{species_list.species_list_name}}</span>
+	   				 <span style="width:20%;text-align:right">{{species_list.quantity}}</span>
+	 		  </label>
 			
 			</ion-item>
 		 </ion-list>
@@ -46,8 +50,12 @@
 		     <a class="button button-icon icon ion-home" style="height:55px;">&nbsp;Home</a>
 		  </div>
 		  <h1 class="title"></h1>
+		    
 		  <div class="buttons" ng-click="gotoCamera();">
 		      <a class="button button-icon icon ion-ios-camera" style="height:55px;">&nbsp;Capture</a>
+		  </div>
+		  <div class="buttons" ng-click="gotoHowToPage();">
+		      <a class="button button-icon icon ion-ios-help" style="height:55px;">&nbsp;Help</a>
 		  </div>
     </ion-footer-bar>
 </ion-view>  

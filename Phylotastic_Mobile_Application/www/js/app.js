@@ -39,6 +39,15 @@ angular.module('ionicApp', ['ionic','ionicApp.controller','ngCordova'])
         }
       }
     })
+    .state('phylotastic.how_to_page', {
+      url: "/how_to_page",
+      views: {
+        'home-tab': {
+          templateUrl: "templates/how_to_page.html",
+          controller: 'How_To_Page_Ctrl'
+        }
+      }
+    })
     .state('phylotastic.tree_view', {
       url: "/tree_view",
       cache: false,
