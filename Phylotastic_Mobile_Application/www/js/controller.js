@@ -362,7 +362,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 							            ]
 							          }
 					
-					var API_KEY = "AIzaSyA-6xVFstqpFhFwOTYfJlHoRVgj9buA4oY"
+									  var API_KEY = "";
 					gapi.client.setApiKey(API_KEY);
 					var restRequest = gapi.client.request({
 						  'path': 'https://vision.googleapis.com/v1/images:annotate',
