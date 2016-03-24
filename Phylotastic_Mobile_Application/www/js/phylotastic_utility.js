@@ -1,4 +1,9 @@
-
+function standardTreeFromOpenTree(tree_text){
+	var beautifulTreeText = tree_text.replace(/[0-9]/g,'');
+	beautifulTreeText = beautifulTreeText.replace(/_ott/g,'');
+	beautifulTreeText = beautifulTreeText.replace(/_/g,' ');
+	return beautifulTreeText;
+};
 
 Date.prototype.yyyymmdd = function() {
    var yyyy = this.getFullYear().toString();

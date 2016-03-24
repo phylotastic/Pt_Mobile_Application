@@ -42,6 +42,9 @@ angular.module('ionicApp.controller',['ngCordova'])
     	window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","SPECIES_NAMES_LIST_VIEW");
     	$state.go("phylotastic.home_page");
     };
+    $scope.gotoHowToPage = function() {
+    	$state.go("phylotastic.how_to_page");
+    };
     $scope.build_view_tree = function() {
     	if (!isEmpty(cur_species_names_list) && cur_species_names_list.length > 0){
     		$state.go("phylotastic.tree_view");
@@ -55,6 +58,8 @@ angular.module('ionicApp.controller',['ngCordova'])
     	
     };
     $scope.confirmDelete = function(item){
+    	//document.getElementById(item).innerHTML = "<font color='red'>Delete</font>&nbsp;&nbsp;&nbsp;" + item;
+    	document.getElementById(item).style.color = "red";
     	var confirmPopup = $ionicPopup.confirm({
 		     title: 'Phylotastic',
 		     template: 'Do you want to delete <b>' + item + '</b> out of current list ?'
@@ -63,6 +68,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		confirmPopup.then(function(res) {
 		     if(res) {
 		    	 /* Remove item out of list */
+		    	 document.getElementById(item).style.color = "black";
 		    	 console.log(item);
 		    	 var delete_result = delete_SpecieName_into_SpeciesNames_List(item,cur_species_names_list);
 		    	 if (delete_result){
@@ -79,6 +85,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		    	 }
 		    	 
 		     } else {
+		    	document.getElementById(item).style.color = "black";
 		    	return;
 		     }
 		});
@@ -110,12 +117,15 @@ angular.module('ionicApp.controller',['ngCordova'])
     	window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","TREE_VIEW");
     	$state.go("phylotastic.home_page");
     };
+    $scope.gotoHowToPage = function() {
+    	$state.go("phylotastic.how_to_page");
+    };
     $scope.export_tree = function() {
     	if (!isEmpty(global_tree_data)){
     		myPopup = $ionicPopup.show({
 	    	    template: 
 	    	              '<div align="center"><button class="button button-positive" style="width:200px" ng-click="openWebBrowserWithTree()">Open in Browser</button></div><br>' +
-	    	              '<div align="center"><button class="button button-positive" style="width:200px" ng-click="emailToMeWithTree()">Email to Me</button></div><br>' +
+	    	              '<!-- <div align="center"><button class="button button-positive" style="width:200px" ng-click="emailToMeWithTree()">Email to Me</button></div><br> -->' +
 	    	              '<div align="center"><button class="button button-positive" style="width:200px" ng-click="cancelExportTree()">No, thanks</button></div><br>',
 	    	    title: 'Please select the method you want to export tree data',
 	    	    scope: $scope,
@@ -137,6 +147,12 @@ angular.module('ionicApp.controller',['ngCordova'])
     };
     
     $scope.emailToMeWithTree = function(){
+    	
+    	var alertPopup = $ionicPopup.alert({
+		     title: 'Oops !',
+		     template: 'Sorry!  This feature is not implemented yet'
+		});
+    	
     	myPopup.close();
     	return false;
     };
@@ -169,14 +185,14 @@ angular.module('ionicApp.controller',['ngCordova'])
 				function(data, status, headers, config) {
 					$ionicLoading.hide();
 					var tree_data = data;
-					global_tree_data = tree_data.newick;
+					global_tree_data = standardTreeFromOpenTree(tree_data.newick);
 					console.log("Phylotastic - tree data : " + JSON.stringify(tree_data));
 					if (!isEmpty(tree_data)){
 						if (!isEmpty(tree_data.newick)){
 							    //console.log(tree_data.newick);
 							   
 				                var dataObject = {
-				                                newick: tree_data.newick                  
+				                                newick: global_tree_data                 
 				                };
 				                phylocanvas = new Smits.PhyloCanvas(
 				                    dataObject,
@@ -362,7 +378,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 							            ]
 							          }
 					
-									  var API_KEY = "";
+					var API_KEY = "AIzaSyA-6xVFstqpFhFwOTYfJlHoRVgj9buA4oY"
 					gapi.client.setApiKey(API_KEY);
 					var restRequest = gapi.client.request({
 						  'path': 'https://vision.googleapis.com/v1/images:annotate',
@@ -427,36 +443,44 @@ angular.module('ionicApp.controller',['ngCordova'])
 													 update_master_list(current_species_list_object, main_object_species_list_list);
 													 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(main_object_species_list_list));													
 													 /*  End */
-													 var confirmPopup = $ionicPopup.confirm({
-													     title: 'Phylotastic',
-													     template: 'Your new species names are updated already in current list of species names. Do you want to continue capture photo ?'
-													   });
+													 var message = "";
+													 if (scientific_names_list.length == 1){
+														 message = "Names added : " + scientific_names_list[0];
+													 } else {
+														 message = "Names added : " + scientific_names_list[0] + " and " + (scientific_names_list.length  - 1) + " others";
+													 }
+													 
+													 var confirmPopup = $ionicPopup.alert({
+													     title: 'Success !',
+													     template: message
+													 });
 		
+													 /*
 													 confirmPopup.then(function(res) {
 													     if(res) {
-													    	//console.log("Current Species List : " + window.localStorage.getItem("current_species_names_list")); 
 													    	return;
 													     } else {
-													    	//console.log("Current Species List : " + window.localStorage.getItem("current_species_names_list")); 
-													        
 													        $state.go("phylotastic.species_names_list_view");
 													     }
 													   });
-													 
+													  */
+													 confirmPopup.then(function(res) {
+														return; 
+													 });
 													 
 												 } else {
 													 
 													 var alertPopup = $ionicPopup.alert({
-													     title: 'Phylotastic',
-													     template: 'There is 0 scientific names can be found'
+													     title: 'Oops !',
+													     template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
 												     });
 												     return;
 												 }
 											 } else {
 												 //alert("Returned data from Web Service is in-valid structure or There is 0 scientific names can be found. Please check with Web Services admin");
 												 var alertPopup = $ionicPopup.alert({
-												     title: 'Phylotastic',
-												     template: 'Returned data from Web Service is in-valid structure or There is 0 scientific names can be found. Please check with Web Services admin'
+												     title: 'Oops !',
+												     template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
 											     });
 												 return;
 											 }
@@ -554,12 +578,34 @@ angular.module('ionicApp.controller',['ngCordova'])
     $scope.gotoCamera = function() {
     	$state.go("phylotastic.image_view");
     };
+    
+    $scope.gotoHowToPage = function() {
+    	$state.go("phylotastic.how_to_page");
+    };
 })
 /****************************************/
 /** Home_Page_Ctrl Controller **/
 /****************************************/
 .controller('How_To_Page_Ctrl', function($scope,$state) {
 	console.log("How to page");
+	$scope.gotoPage = function(item){
+		if (item === "OCR"){
+			window.open('https://en.wikipedia.org/wiki/Optical_character_recognition', '_system', 'location=no');
+			return;
+		} else if (item === "GNRD"){
+			window.open('http://gnrd.globalnames.org/', '_system', 'location=no');
+			return;
+		} else if (item === "OPEN_TREE"){
+			window.open('http://opentreeoflife.org/', '_system', 'location=no');
+			return;
+		} else if (item === "GITHUB_ISSUE"){
+			window.open('https://github.com/phylotastic/Phylotastic_Mobile_Application/issues/new', '_system', 'location=no');
+			return;
+		} else if (item === "PHYLOTASTIC") {
+			window.open('http://www.phylotastic.org', '_system', 'location=no');
+			return;
+		}
+	};
 })
 /****************************************/
 /** Home_Page_Ctrl Controller **/
@@ -587,8 +633,8 @@ angular.module('ionicApp.controller',['ngCordova'])
     	console.log("Tam khoa di Camera");
         //alert("Please seclect a list you want to store new species names !");
         $ionicPopup.alert({
-		     title: 'Phylotastic',
-		     template: 'Please seclect a list you want to store new species names !'
+		     title: 'Oops !',
+		     template: 'Please seclect a list, before trying to capture names !'
 	    });
     	return;
     };

@@ -1,14 +1,15 @@
 <link href="css/common.css" rel="stylesheet">
 <ion-view hide-back-button="true" cache-view="false">
   <ion-nav-buttons side="left" style="color: grey;">
-      <a class="button button-icon icon ion-navicon" ui-sref="#"></a>
+      <!--  <a class="button button-icon icon ion-navicon" ui-sref="#"></a> -->
+      <img src="img/logo_inside.png" style="width:80%;height:75%"/>
   </ion-nav-buttons>
   <ion-nav-title>
-      <h1 class="title">Phylotastic</h1>
+      
   </ion-nav-title>
   <ion-nav-buttons side="right" style="color: grey;">
         <a class="button button-icon ion-plus-round" ng-click="addNewMasterList();"></a>
-	    <a class="button button-icon ion-gear-b" ui-sref="#"></a>
+	    <!-- <a class="button button-icon ion-gear-b" ui-sref="#"></a>  -->
 	 </ion-nav-buttons>          
   <ion-content class="padding common-body" overflow-scroll="true">
      <br/>
@@ -34,28 +35,17 @@
 	 <br/>
 	 
   </ion-content>
-  <!--  
-  <div  style="position:absolute;bottom:60px;width:100%;height:80px">
-		  <button type="button" style="float: left; height:70px" ng-click="gotoCamera();">
-				<i class="icon ion-ios-camera" style="font-size: 70px;"></i>
-		  </button>
-		  <button type="button" align="right" style="float: right; height:70px">
-				<i class="icon ion-ios-flower-outline" style="font-size: 70px;"></i>
-		  </button>
-		  
-  </div>
-  -->  
-  <ion-footer-bar align-title="center" class="bar-balanced" style="height:56px">
+  
+  <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
 		  <div class="buttons" ng-click="gotoHome();">
-		     <a class="button button-icon icon ion-home" style="height:55px;">&nbsp;Home</a>
+		     <a class="button button-icon icon ion-home"></a>
 		  </div>
-		  <h1 class="title"></h1>
-		    
-		  <div class="buttons" ng-click="gotoCamera();">
-		      <a class="button button-icon icon ion-ios-camera" style="height:55px;">&nbsp;Capture</a>
+		  <h1 class="title"></h1>  
+		  <div  class="buttons" ng-click="gotoCamera();">
+		      <a class="button button-icon icon ion-ios-camera"></a>
 		  </div>
-		  <div class="buttons" ng-click="gotoHowToPage();">
-		      <a class="button button-icon icon ion-ios-help" style="height:55px;">&nbsp;Help</a>
+		  <div class="title" ng-click="gotoHowToPage();">
+		      <a class="button button-icon icon ion-ios-help"></a>
 		  </div>
-    </ion-footer-bar>
+   </ion-footer-bar>
 </ion-view>  
