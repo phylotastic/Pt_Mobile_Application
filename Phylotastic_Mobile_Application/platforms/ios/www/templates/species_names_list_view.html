@@ -10,10 +10,13 @@
   <ion-content class="padding common-body" overflow-scroll="true">
      <br/>
      <div ng-hide="!species_names_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
-	     <ion-list> 
+	     <ion-list>
 			   <ion-item ng-repeat="species_name in species_names_list track by $index" ng-click="selectSpeciesName(species_name)" style="vertical-align: middle">
-				   {{species_name}}
+				  <div class="swipe" on-swipe-right="confirmDelete(species_name);">
+				      <p id="{{species_name}}">{{species_name}}</p>
+				  </div> 
 			   </ion-item>
+			 </div>  
 	     </ion-list>	 
      </div>
      <div ng-hide="species_names_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
@@ -21,14 +24,30 @@
      </div>
 	 <br/> 
   </ion-content>
- 
-  <ion-footer-bar align-title="center" class="bar-balanced" style="height:56px">
+  <!--  
+  <ion-footer-bar align-title="center" class="bar-positive" style="height:56px">
 		  <div class="buttons" ng-click="gotoHome();">
-		      <a class="button button-icon icon ion-home" style="height:55px;"></a>
+		      <a class="button button-icon icon ion-home" style="height:55px;">&nbsp;Home</a>
 		  </div>
-		  <h1 class="title">{{species_list_name}}</h1>
+		  <h1 class="title"></h1>
 		  <div class="buttons" ng-click="gotoCamera();">
 		      <a class="button button-icon icon ion-ios-camera" style="height:55px;">&nbsp;Capture</a>
 		  </div>
+		  <div class="buttons" ng-click="gotoHowToPage();">
+		      <a class="button button-icon icon ion-ios-help" style="height:55px;">&nbsp;Help</a>
+		  </div>
     </ion-footer-bar>
+    -->
+   <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
+		  <div class="buttons" ng-click="gotoHome();">
+		     <a class="button button-icon icon ion-home"></a>
+		  </div>
+		  <h1 class="title"></h1>  
+		  <div  class="buttons" ng-click="gotoCamera();">
+		      <a class="button button-icon icon ion-ios-camera"></a>
+		  </div>
+		  <div class="title" ng-click="gotoHowToPage();">
+		      <a class="button button-icon icon ion-ios-help"></a>
+		  </div>
+   </ion-footer-bar>
 </ion-view>  

@@ -1,7 +1,12 @@
+var TIMEOUT_CONNECTION = 25000;
+
 function standardTreeFromOpenTree(tree_text){
 	var beautifulTreeText = tree_text.replace(/[0-9]/g,'');
 	beautifulTreeText = beautifulTreeText.replace(/_ott/g,'');
 	beautifulTreeText = beautifulTreeText.replace(/_/g,' ');
+	/* Remove internal node in Newick Tree */
+	beautifulTreeText = beautifulTreeText.replace(/\)[a-z|A-Z]+/g, ')');
+	/* End removing */
 	return beautifulTreeText;
 };
 
@@ -127,6 +132,21 @@ function delete_SpecieName_into_SpeciesNames_List(specieName,JSONArray){
 	    deleted_specieName = deleted_specieName.toString().trim().toUpperCase();
 	    specieName = specieName.toString().trim().toUpperCase();
 	    if(deleted_specieName === specieName){
+	       if (index > - 1){
+	    	   JSONArray.splice(index, 1);
+	    	   return true;
+	       } else{
+	    	   return false;
+	       }
+	    } 
+	}
+	return false;
+};
+
+function delete_SpeciesList_into_Master_List(species_list_object,JSONArray){
+	for (var index = 0; index < JSONArray.length; index++) {
+	    var deleted_species_names_list = JSONArray[index];
+	    if(deleted_species_names_list.id === species_list_object.id){
 	       if (index > - 1){
 	    	   JSONArray.splice(index, 1);
 	    	   return true;

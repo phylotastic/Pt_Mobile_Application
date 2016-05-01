@@ -1,5 +1,8 @@
 @charset "UTF-8";
 /* CSS Document */
+.custom-popup.popup-container .popup {
+  border-radius: 8px !important;
+}
 
 .mynavbar{
 	height: 40px !important;

@@ -1,3 +1,48 @@
+var TIMEOUT_CONNECTION = 25000;
+
+function standardTreeFromOpenTree(tree_text){
+	var beautifulTreeText = tree_text.replace(/[0-9]/g,'');
+	beautifulTreeText = beautifulTreeText.replace(/_ott/g,'');
+	beautifulTreeText = beautifulTreeText.replace(/_/g,' ');
+	/* Remove internal node in Newick Tree */
+	beautifulTreeText = beautifulTreeText.replace(/\)[a-z|A-Z]+/g, ')');
+	/* End removing */
+	return beautifulTreeText;
+};
+
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + "-" + (mm[1]?mm:"0"+mm[0]) + "-" + (dd[1]?dd:"0"+dd[0]); // padding
+};
+
+
+function getMaxID(JSON_LIST) {
+	var maxID = 0;
+	for(var index = 0 ; index < JSON_LIST.length ; index++){
+		if (JSON_LIST[index].id > maxID){
+			maxID = JSON_LIST[index].id;
+		}
+	}
+	return maxID;
+}
+
+function update_object_of_master_list(species_list_object, species_names_list){
+	species_list_object.species = species_names_list;
+	species_list_object.quantity = species_names_list.length;
+	//console.log(species_list_object);
+}
+
+function update_master_list(species_list_object, master_list){
+	for(var index = 0 ; index < master_list.length ; index++){
+		if (species_list_object.id === master_list[index].id){
+			master_list[index] = species_list_object;
+		}
+	}
+	//console.log(master_list[0]);
+}
+
 function checkNetConnection(){
 	 var xhr = new XMLHttpRequest();
 	 //var file = "http://api.landpotential.org";
@@ -87,6 +132,21 @@ function delete_SpecieName_into_SpeciesNames_List(specieName,JSONArray){
 	    deleted_specieName = deleted_specieName.toString().trim().toUpperCase();
 	    specieName = specieName.toString().trim().toUpperCase();
 	    if(deleted_specieName === specieName){
+	       if (index > - 1){
+	    	   JSONArray.splice(index, 1);
+	    	   return true;
+	       } else{
+	    	   return false;
+	       }
+	    } 
+	}
+	return false;
+};
+
+function delete_SpeciesList_into_Master_List(species_list_object,JSONArray){
+	for (var index = 0; index < JSONArray.length; index++) {
+	    var deleted_species_names_list = JSONArray[index];
+	    if(deleted_species_names_list.id === species_list_object.id){
 	       if (index > - 1){
 	    	   JSONArray.splice(index, 1);
 	    	   return true;
