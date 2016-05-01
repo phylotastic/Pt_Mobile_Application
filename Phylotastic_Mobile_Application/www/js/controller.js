@@ -33,7 +33,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 	/* List data in list */
 	$scope.species_names_list = cur_species_names_list;
 	$scope.species_list_name = cur_species_list_object.species_list_name;
-
+	
 	/* Action in Page */
 	$scope.gotoCamera = function() {
     	$state.go("phylotastic.image_view");
@@ -56,7 +56,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 			});
     		return;
     	}
-
+    	
     };
     $scope.confirmDelete = function(item){
     	//document.getElementById(item).innerHTML = "<font color='red'><b>Delete</b></font>&nbsp;&nbsp;" + item;
@@ -75,7 +75,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		    	 console.log(item);
 		    	 var delete_result = delete_SpecieName_into_SpeciesNames_List(item,cur_species_names_list);
 		    	 if (delete_result){
-
+		    		 
 		    		 //$scope.species_names_list = "";
 		    		 /* Update to current object */
 		    		 var main_object_species_list_list =  JSON.parse(window.localStorage.getItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC"));
@@ -84,13 +84,13 @@ angular.module('ionicApp.controller',['ngCordova'])
 					 window.localStorage.setItem("currect_species_list_object",JSON.stringify(current_species_list_object));
 					 window.localStorage.setItem("current_species_names_list",JSON.stringify(cur_species_names_list));
 					 update_master_list(current_species_list_object, main_object_species_list_list);
-					 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(main_object_species_list_list));
+					 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(main_object_species_list_list));	
 					 /* End Update */
 					 $scope.species_names_list = cur_species_names_list;
 		    	 }
-
+		    	 
 		     } else {
-		    	//document.getElementById(item).innerHTML = item;
+		    	//document.getElementById(item).innerHTML = item; 
 		    	document.getElementById(item).style.color = "black";
 		    	return;
 		     }
@@ -112,7 +112,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		} else {
 			produced_taxa_species_names = produced_taxa_species_names + cur_species_names_list[i] + "|";
 		}
-
+		
 	}
 	var global_tree_data = "";
 	var myPopup;
@@ -130,7 +130,7 @@ angular.module('ionicApp.controller',['ngCordova'])
     $scope.export_tree = function() {
     	if (!isEmpty(global_tree_data)){
     		myPopup = $ionicPopup.show({
-	    	    template:
+	    	    template: 
 	    	              '<div align="center"><button class="button button-positive" style="width:200px" ng-click="openWebBrowserWithTree()">Open in Browser</button></div><br>' +
 	    	              '<!-- <div align="center"><button class="button button-positive" style="width:200px" ng-click="emailToMeWithTree()">Email to Me</button></div><br> -->' +
 	    	              '<div align="center"><button class="button button-positive" style="width:200px" ng-click="cancelExportTree()">No, thanks</button></div><br>',
@@ -144,41 +144,41 @@ angular.module('ionicApp.controller',['ngCordova'])
 			     cssClass: 'custom-popup',
 			     template: 'We are sorry.  We could not find phylogeny information for these species.'
 			});
-    	}
+    	}	
     };
-
+    
     $scope.openWebBrowserWithTree = function(){
     	console.log("Open in Web Browser");
     	window.open('http://128.123.177.13/Phylotastic_DisplayTree_Project/display_tree.html?uri=&tree_data=' + global_tree_data + '&format=newick_text', '_system', 'location=no');
     	myPopup.close();
     	return true;
     };
-
+    
     $scope.emailToMeWithTree = function(){
-
+    	
     	var alertPopup = $ionicPopup.alert({
 		     title: 'Oops !',
 		     cssClass: 'custom-popup',
 		     template: 'Sorry!  This feature is not implemented yet.'
 		});
-
+    	
     	myPopup.close();
     	return false;
     };
-
+    
     $scope.cancelExportTree = function() {
     	myPopup.close();
     	return false;
     }
-
-    if (checkNetConnection() === true ){
+	
+    if (checkNetConnection() === true ){			
     	    /* Using Web Service to get tree data */
 			$ionicLoading.show({
 		        template: '<ion-spinner icon="ios"></ion-spinner>Open Tree services are working...'
 		     });
 			var startTime = new Date().getTime();
 			console.log(produced_taxa_species_names);
-			$http({
+			$http({	
 			    method: 'POST',
 			    //url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/get_tree?taxa=" + produced_taxa_species_names,
 			    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/gt/ot/get_tree",
@@ -203,17 +203,17 @@ angular.module('ionicApp.controller',['ngCordova'])
 						if (!isEmpty(tree_data.newick)){
 							    console.log(global_tree_data);
 				                var dataObject = {
-				                                newick: global_tree_data
+				                                newick: global_tree_data                 
 				                };
-
+				                
 				                document.getElementById("svgCanvas").innerHTML = "";
-
+				                
 				                phylocanvas = new Smits.PhyloCanvas(
 				                    dataObject,
-				                    'svgCanvas',
+				                    'svgCanvas', 
 				                    1000, 1000
 				                );
-
+				                
 						} else {
 							var alertPopup = $ionicPopup.alert({
 							     title: 'Oops !',
@@ -230,7 +230,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 						});
 						return;
 					}
-
+					
 			}).error(function(err) {
 				console.log("Deo hieu");
 				console.log(err.error);
@@ -242,10 +242,10 @@ angular.module('ionicApp.controller',['ngCordova'])
 					     cssClass: 'custom-popup',
 					     template: 'Sorry!  We did not get a response in 25 seconds.  Please wait and try again later.'
 					});
-
+		        	
 		        	alertPopup.then(function(res) {
 		        		alertPopup.close();
-						return;
+						return; 
 					 });
 		        } else {
 		        	var alertPopup = $ionicPopup.alert({
@@ -253,13 +253,13 @@ angular.module('ionicApp.controller',['ngCordova'])
 					     cssClass: 'custom-popup',
 					     template: err.error
 					});
-
+		        	
 		        	alertPopup.then(function(res) {
 		        		alertPopup.close();
-						return;
+						return; 
 					});
 		        }
-
+			   
 		    });
     } else {
     	var alertPopup = $ionicPopup.alert({
@@ -269,7 +269,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		});
     	return;
     }
-})
+})	
 /****************************************/
 /** Login_Ctrl Controller **/
 /****************************************/
@@ -285,7 +285,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 		}
 		return hasMatch;
 	}
-
+	
 	function updateAuthExist(email,auth_key,JSONArray){
 		for (var index = 0; index < JSONArray.length; index++) {
 		    var auth = JSONArray[index];
@@ -299,11 +299,11 @@ angular.module('ionicApp.controller',['ngCordova'])
 		console.log("Clear Cache");
 		$ionicHistory.clearCache();
 	}
-
+	
 	/* Test Login with Google Account */
 	$scope.googleSignIn_Device = function() {
-        $cordovaOauth.google("936627843472-tbvfhfohauanrehv1l94a6lrj5lvq0r3.apps.googleusercontent.com",
-        		            ["https://www.googleapis.com/auth/urlshortener",
+        $cordovaOauth.google("936627843472-tbvfhfohauanrehv1l94a6lrj5lvq0r3.apps.googleusercontent.com", 
+        		            ["https://www.googleapis.com/auth/urlshortener", 
         		             "https://www.googleapis.com/auth/userinfo.email"])
         .then(function(result) {
             var access_token = result.access_token;
@@ -336,7 +336,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 							} else {
 								console.log("Update");
 								updateAuthExist(email,localData,listAuthentication['authentication']);
-							}
+							}	
 					}
 					window.localStorage.setItem("current_json_auth_data_phylotastic", localData);
 					window.localStorage.setItem("current_email_phylotastic",email);
@@ -346,7 +346,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 					window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","LOGIN_PAGE");
 					//$ionicLoading.hide();
 					//console.log("GoogleAuthentication : " + JSON.stringify(listAuthentication));
-					$state.go('phylotastic.home_page');
+					$state.go('phylotastic.home_page');	
 			}).error(function(err) {
 				var alertPopup = $ionicPopup.alert({
 				     title: 'Oops!',
@@ -362,14 +362,14 @@ angular.module('ionicApp.controller',['ngCordova'])
         	return;
         });
     };
-
+    
 	/* Test before click login */
 	$scope.signIn = function(email, password) {
 		        $ionicLoading.show({
 		           template: '<ion-spinner icon="ios"></ion-spinner>Logging in...'
 		        });
 				var email = document.getElementById("email").value;
-				var password = document.getElementById("password").value;
+				var password = document.getElementById("password").value;				
 				clearAllCache();
 				$http({
 					    method: 'POST',
@@ -385,7 +385,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 				}).success(
 						function(data, status, headers, config) {
 							var localData = JSON.stringify(data);
-
+							
 							var objAuth = window.localStorage.getItem("PHYLOTASTIC_AUTHENTICATION_LIST");
 							if (objAuth === null || objAuth === 'null'){
 								var listAuthentication = { authentication : []};
@@ -404,7 +404,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 									});
 								} else {
 									updateAuthExist(email,localData,listAuthentication['authentication']);
-								}
+								}	
 							}
 							window.localStorage.setItem("current_json_auth_data_phylotastic", localData);
 							window.localStorage.setItem("current_email_phylotastic",email);
@@ -414,7 +414,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 							window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","LOGIN_PAGE");
 							$ionicLoading.hide();
 							$state.go('phylotastic.home_page');
-
+						
 						}).error(function(err) {
 							$ionicLoading.hide();
 					        var alertPopup = $ionicPopup.alert({
@@ -446,14 +446,14 @@ angular.module('ionicApp.controller',['ngCordova'])
 	} else {
        $scope.pictureURL = 'img/800x800.png';
 	}
-
+	
 	var finalImageData = "";
 	var contentOCR_Text_Result = "";
 	var scientific_names_list;
-
-
+	
+	
 	$scope.submitOCR = function(){
-
+		
 		 if (isEmpty(finalImageData)){
 			 var alertPopup = $ionicPopup.alert({
 			     title: 'Phylotastic',
@@ -471,7 +471,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 							             "requests":[
 							              {
 							                "image":{
-							                  "content":finalImageData,
+							                  "content":finalImageData, 
 							                },
 							                "features":[
 							                  {
@@ -482,8 +482,8 @@ angular.module('ionicApp.controller',['ngCordova'])
 							              }
 							            ]
 							          }
-
-					var API_KEY = "";
+					
+					var API_KEY = "AIzaSyA-6xVFstqpFhFwOTYfJlHoRVgj9buA4oY"
 					gapi.client.setApiKey(API_KEY);
 					var restRequest = gapi.client.request({
 						  'path': 'https://vision.googleapis.com/v1/images:annotate',
@@ -491,13 +491,13 @@ angular.module('ionicApp.controller',['ngCordova'])
 						  'params': {'key': API_KEY},
 						  'headers':{'Content-Type':'application/json'},
 						  'body': JSON.stringify(jsonRequest)
-
+						  
 					});
 				    restRequest.then(function(resp) {
-
+						  
 						  $ionicLoading.hide();
 						  console.log("DONE");
-
+						
 						  if (resp.result.responses.length < 1) {
 							   var alertPopup = $ionicPopup.alert({
 								     title: 'Oops !',
@@ -515,11 +515,11 @@ angular.module('ionicApp.controller',['ngCordova'])
 								   return;
 							  }
 						  }
-
+						  
 						  contentOCR_Text_Result = resp.result.responses[0].textAnnotations[0].description;
-
+						  
 						  console.log("Phylotastic - OCR Result Data : " + contentOCR_Text_Result);
-
+						  
 						  if (isEmpty(contentOCR_Text_Result)){
 							  //alert("There is no OCR data. Please re-do again");
 							   var alertPopup = $ionicPopup.alert({
@@ -554,7 +554,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 										console.log("Phylotastic - GNRD results : " + JSON.stringify(data));
 										if (!isEmpty(data)) {
 											 if	(!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]'){
-												 scientific_names_list = data.scientificNames;
+												 scientific_names_list = data.scientificNames; 
 												 if (scientific_names_list.length > 0){
 													 /* Can attach with currect_species_names_list */
 													 var current_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
@@ -568,7 +568,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 													 update_object_of_master_list(current_species_list_object,current_species_names_list);
 													 window.localStorage.setItem("currect_species_list_object",JSON.stringify(current_species_list_object));
 													 update_master_list(current_species_list_object, main_object_species_list_list);
-													 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(main_object_species_list_list));
+													 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(main_object_species_list_list));													
 													 /*  End */
 													 var message = "";
 													 if (scientific_names_list.length == 1){
@@ -576,13 +576,13 @@ angular.module('ionicApp.controller',['ngCordova'])
 													 } else {
 														 message = "Names added : " + scientific_names_list[0] + " and " + (scientific_names_list.length  - 1) + " others";
 													 }
-
+													 
 													 var confirmPopup = $ionicPopup.alert({
 													     title: 'Success !',
 													     cssClass: 'custom-popup',
 													     template: message
 													 });
-
+		
 													 /*
 													 confirmPopup.then(function(res) {
 													     if(res) {
@@ -594,11 +594,11 @@ angular.module('ionicApp.controller',['ngCordova'])
 													  */
 													 confirmPopup.then(function(res) {
 														confirmPopup.close();
-														return;
+														return; 
 													 });
-
+													 
 												 } else {
-
+													 
 													 var alertPopup = $ionicPopup.alert({
 													     title: 'Oops !',
 													     cssClass: 'custom-popup',
@@ -624,7 +624,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 										     });
 											return;
 										}
-
+										
 							  }).error(function(err) {
 										$ionicLoading.hide();
 										console.log(err.error);
@@ -643,12 +643,12 @@ angular.module('ionicApp.controller',['ngCordova'])
 										      });
 									     }
 							  });  // End Request to GNRD
-
+							  
 						  }
 					}, function(reason) {
 						  console.log('Error: ' + reason.result.error.message);
 						  $ionicLoading.hide();
-
+						 
 						  var respTime_ocr = new Date().getTime() - startTime_ocr;
 					      if(respTime_ocr >= TIMEOUT_CONNECTION){
 					    	  var alertPopup = $ionicPopup.alert({
@@ -674,7 +674,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 			 }
 		 }
 	};
-
+	
 	$scope.inPhotoLibrary = function(){
 		 var options_library = {
 				  quality: 100,
@@ -695,10 +695,10 @@ angular.module('ionicApp.controller',['ngCordova'])
 			}, function(error) {
 				console.log("Camera error : " + angular.toJson(error));
 			});
-
+		 
 	};
-
-    $scope.takePicture = function() {
+	
+    $scope.takePicture = function() {   
 	   var options_camera = {
 			      quality: 100,
 			      destinationType: Camera.DestinationType.DATA_URL,
@@ -711,7 +711,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 			      saveToPhotoAlbum: false,
 			      correctOrientation:true
 	   };
-
+	   
 		$cordovaCamera.getPicture(options_camera)
 		.then(function(imageData){
 			$scope.pictureURL = "data:image/jpeg;base64," + imageData;
@@ -720,17 +720,17 @@ angular.module('ionicApp.controller',['ngCordova'])
 			console.log("Camera error : " + angular.toJson(error));
 		});
 	};
-
+	
 	/** Activity **/
     $scope.gotoHome = function() {
     	window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","IMAGE_VIEW");
     	$state.go("phylotastic.home_page");
     };
-
+    
     $scope.gotoCamera = function() {
     	$state.go("phylotastic.image_view");
     };
-
+    
     $scope.gotoHowToPage = function() {
     	$state.go("phylotastic.how_to_page");
     };
@@ -764,7 +764,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 /****************************************/
 .controller('Home_Page_Ctrl', function($scope,$state, $http,$ionicLoading,$ionicPopup) {
 	/** Fake Data **/
-	var jsonPhylotasticData =
+	var jsonPhylotasticData = 
 			[
 			      {
 			    	  "id":1,
@@ -775,13 +775,13 @@ angular.module('ionicApp.controller',['ngCordova'])
 			    	  "species" : []
 			      }
 			 ];
-
+	
 	/** Activity **/
     $scope.gotoHome = function() {
     	console.log("Di home");
     	$state.go("phylotastic.home_page");
     };
-
+    
     $scope.gotoCamera = function() {
     	console.log("Tam khoa di Camera");
         //alert("Please seclect a list you want to store new species names !");
@@ -792,11 +792,11 @@ angular.module('ionicApp.controller',['ngCordova'])
 	    });
     	return;
     };
-
+    
     $scope.gotoHowToPage = function() {
     	$state.go("phylotastic.how_to_page");
     };
-
+    
     $scope.addNewMasterList = function() {
     		  $scope.data = {};
 
@@ -831,7 +831,7 @@ angular.module('ionicApp.controller',['ngCordova'])
     		        	JSON_OBJECT_STRING.push(newObject);
     		        	window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC", JSON.stringify(JSON_OBJECT_STRING));
     		        	$scope.species_lists = JSON_OBJECT_STRING;
-
+    		        	
     		          }
     		        }
     		      }
@@ -856,24 +856,24 @@ angular.module('ionicApp.controller',['ngCordova'])
 		    	 var delete_result = delete_SpeciesList_into_Master_List(species_list_object,JSON_OBJECT_STRING);
 		    	 if (delete_result){
 		    		 /* Update to current object */
-					 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(JSON_OBJECT_STRING));
+					 window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC",JSON.stringify(JSON_OBJECT_STRING));	
 					 /* End Update */
 					 $scope.species_lists = JSON_OBJECT_STRING;
 		    	 }
 		     } else {
-		    	//document.getElementById(item).innerHTML = item;
+		    	//document.getElementById(item).innerHTML = item; 
 		    	document.getElementById(species_list_object.id).style.color = "black";
 		    	//return;
 		     }
 		});
     };
-
+    
     $scope.selectSpeciesList = function(species_list){
     	window.localStorage.setItem("current_species_names_list",JSON.stringify(species_list.species));
     	window.localStorage.setItem("currect_species_list_object",JSON.stringify(species_list));
     	$state.go("phylotastic.species_names_list_view");
     };
-
+    
     /** Scenario **/
     var email = window.localStorage.getItem('current_email_phylotastic');
 	var recorder_name = email;
@@ -884,15 +884,15 @@ angular.module('ionicApp.controller',['ngCordova'])
 	/* Should be Processed Caching Data in HERE */
 	//$ionicLoading.show({
 	//      template: 'Loading Species Lists data...'
-	//});
-	if (previous_page === "LOGIN_PAGE") {
+	//});	
+	if (previous_page === "LOGIN_PAGE") {   
 		   console.log(jsonPhylotasticData);
 		   var JSON_OBJECT_STRING = jsonPhylotasticData;
 		   console.log(JSON_OBJECT_STRING);
 		   $scope.species_lists = JSON_OBJECT_STRING;
 		   window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","LIST_SPECIES_LISTS_PAGE");
 		   if($scope.species_lists.length > 0) {
-			   var localPlots = JSON.stringify(JSON_OBJECT_STRING);
+			   var localPlots = JSON.stringify(JSON_OBJECT_STRING);	
 			   window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC", localPlots);
 		   }
     } else {
@@ -902,5 +902,5 @@ angular.module('ionicApp.controller',['ngCordova'])
 	     $scope.species_lists = JSON_OBJECT_STRING;
     }
 	//$ionicLoading.hide();
-
+    
 }); // End HomePageCtrl
