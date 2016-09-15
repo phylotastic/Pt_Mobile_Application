@@ -344,8 +344,7 @@ angular.module('ionicApp.controller',['ngCordova'])
 
 					window.localStorage.setItem("PHYLOTASTIC_AUTHENTICATION_LIST",JSON.stringify(listAuthentication));
 					window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","LOGIN_PAGE");
-					//$ionicLoading.hide();
-					//console.log("GoogleAuthentication : " + JSON.stringify(listAuthentication));
+				
 					$state.go('phylotastic.home_page');	
 			}).error(function(err) {
 				var alertPopup = $ionicPopup.alert({
@@ -559,7 +558,9 @@ angular.module('ionicApp.controller',['ngCordova'])
 													 /* Can attach with currect_species_names_list */
 													 var current_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
 													 for(var index = 0 ; index < scientific_names_list.length ; index++){
-														 insert_SpecieName_into_SpeciesNames_List(current_species_names_list,scientific_names_list[index]);
+														 if (check_exits_name_in_list(current_species_names_list, scientific_names_list[index]) == false){
+														 	insert_SpecieName_into_SpeciesNames_List(current_species_names_list,scientific_names_list[index]);
+														 }
 													 }
 													 window.localStorage.setItem("current_species_names_list",JSON.stringify(current_species_names_list));
 													 /** Save to current species lists **/

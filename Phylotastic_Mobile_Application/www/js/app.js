@@ -98,6 +98,8 @@ angular.module('ionicApp', ['ionic','ionicApp.controller','ngCordova'])
       }
     });
    
+   /* Set up with authentication requirement */
+   /*
    var listAuthentication = window.localStorage.getItem("PHYLOTASTIC_AUTHENTICATION_LIST");
    console.log("Test " + listAuthentication);
    if (listAuthentication === null || listAuthentication === 'null'){
@@ -108,13 +110,43 @@ angular.module('ionicApp', ['ionic','ionicApp.controller','ngCordova'])
 		   window.localStorage.setItem("current_json_auth_data_phylotastic", jsonObjAuth['authentication'][0].json_auth_data);
 		   window.localStorage.setItem("current_email_phylotastic",jsonObjAuth['authentication'][0].email);
 		   window.localStorage.setItem("current_password_phylotastic",jsonObjAuth['authentication'][0].password);
-		   //window.localStorage.setItem("PREVIOUS_PAGE","LOGIN_PAGE");
 		   $urlRouterProvider.otherwise("/phylotastic/home_page");
 	   } else {
 		   $urlRouterProvider.otherwise("/phylotastic/accounts");
 	   }
 	   
    }
+   */
+   /* Set up without google authentication */
+  var listAuthentication = window.localStorage.getItem("PHYLOTASTIC_AUTHENTICATION_LIST");
+  console.log("Test " + listAuthentication);
+  if (listAuthentication === null || listAuthentication === 'null'){
+	   var listAuthentication = { authentication : []};
+	   listAuthentication.authentication.push({
+			"email" : "phylotastic_ios_mobile_app@gmail.com",
+			"password" : "password",
+			"json_auth_data" : "authentication_data"
+	   });
+	   
+	   window.localStorage.setItem("current_json_auth_data_phylotastic", "authentication_data");
+	   window.localStorage.setItem("current_email_phylotastic","phylotastic_ios_mobile_app@gmail.com");
+	   window.localStorage.setItem("current_password_phylotastic","password");
+	   
+	   window.localStorage.setItem("PHYLOTASTIC_AUTHENTICATION_LIST",JSON.stringify(listAuthentication));
+	   window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC","LOGIN_PAGE");
+	   $urlRouterProvider.otherwise("/phylotastic/home_page");
+  } else {
+	   var jsonObjAuth = JSON.parse(listAuthentication);
+	   if (jsonObjAuth['authentication'].length == 1){	   
+		   window.localStorage.setItem("current_json_auth_data_phylotastic", jsonObjAuth['authentication'][0].json_auth_data);
+		   window.localStorage.setItem("current_email_phylotastic",jsonObjAuth['authentication'][0].email);
+		   window.localStorage.setItem("current_password_phylotastic",jsonObjAuth['authentication'][0].password);
+		   $urlRouterProvider.otherwise("/phylotastic/home_page");
+	   } else {
+		   $urlRouterProvider.otherwise("/phylotastic/accounts");
+	   }
+	   
+  }
    
 });
 
