@@ -106,6 +106,24 @@ function checkExist(value, JSONArray){
 		return hasMatch;
 };
 
+function check_exits_name_in_list(JSONArray,speciesName){
+	if (isEmpty(speciesName)){
+		return true;
+	}
+	speciesName = speciesName.toString().trim().toUpperCase();
+	for(var index = 0 ; index < JSONArray.length ; index++){
+		if (isEmpty(JSONArray[index])){
+			continue;
+		}
+		
+		var element = JSONArray[index].toString().trim().toUpperCase();
+		//console.log("Check : " + speciesName + " :: " + element);
+		if (speciesName == element){
+			return true;
+		}
+	}
+	return false;
+};
 
 function insert_SpecieName_into_SpeciesNames_List(JSONArray,speciesName){
 	speciesName = speciesName.toString().trim();
