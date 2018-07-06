@@ -46,7 +46,6 @@ function update_master_list(species_list_object, master_list){
 function checkNetConnection(){
 	 var xhr = new XMLHttpRequest();
 	 var file = "http://api.landpotential.org";
-	 //var file = "http://128.123.177.21:8080";
 	 var r = Math.round(Math.random() * 10000);
 	 xhr.open('HEAD', file , false);
 	 try {
