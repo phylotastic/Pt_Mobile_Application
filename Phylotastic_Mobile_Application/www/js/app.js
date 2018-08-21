@@ -17,7 +17,7 @@ angular.module('ionicApp', ['ionic','ionicApp.controller','ngCordova'])
   $stateProvider
     .state('phylotastic', {
       url: "/phylotastic",
-      abstrsct : true,
+      abstract : true,
       templateUrl: "templates/tabs.html"
     })
     .state('phylotastic.home_page', {

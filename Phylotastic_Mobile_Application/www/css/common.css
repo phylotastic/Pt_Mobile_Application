@@ -17,7 +17,9 @@
 	padding: 0px;
 }
 
-
+#svgcanvas {
+    background-color:aqua;
+}
 
 .lpks-id {
 	width: 95%;

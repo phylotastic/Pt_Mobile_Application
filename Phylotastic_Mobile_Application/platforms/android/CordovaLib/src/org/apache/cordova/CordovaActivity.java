@@ -26,13 +26,14 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,7 +49,7 @@ import android.widget.FrameLayout;
  * html file that contains the application.
  *
  * As an example:
- * 
+ *
  * <pre>
  *     package org.apache.cordova.examples;
  *
@@ -65,8 +66,8 @@ import android.widget.FrameLayout;
  *       }
  *     }
  * </pre>
- * 
- * Cordova xml configuration: Cordova uses a configuration file at 
+ *
+ * Cordova xml configuration: Cordova uses a configuration file at
  * res/xml/config.xml to specify its settings. See "The config.xml File"
  * guide in cordova-docs at http://cordova.apache.org/docs for the documentation
  * for the configuration. The use of the set*Property() methods is
@@ -88,6 +89,9 @@ public class CordovaActivity extends Activity {
     // when another application (activity) is started.
     protected boolean keepRunning = true;
 
+    // Flag to keep immersive mode if set to fullscreen
+    protected boolean immersiveMode;
+
     // Read from config.xml:
     protected CordovaPreferences preferences;
     protected String launchUrl;
@@ -99,24 +103,32 @@ public class CordovaActivity extends Activity {
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        // need to activate preferences before super.onCreate to avoid "requestFeature() must be called before adding content" exception
+        loadConfig();
+
+        String logLevel = preferences.getString("loglevel", "ERROR");
+        LOG.setLogLevel(logLevel);
+
         LOG.i(TAG, "Apache Cordova native platform version " + CordovaWebView.CORDOVA_VERSION + " is starting");
         LOG.d(TAG, "CordovaActivity.onCreate()");
 
-        // need to activate preferences before super.onCreate to avoid "requestFeature() must be called before adding content" exception
-        loadConfig();
-        if(!preferences.getBoolean("ShowTitle", false))
-        {
+        if (!preferences.getBoolean("ShowTitle", false)) {
             getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         }
-        
-        if(preferences.getBoolean("SetFullscreen", false))
-        {
-            Log.d(TAG, "The SetFullscreen configuration is deprecated in favor of Fullscreen, and will be removed in a future version.");
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else if (preferences.getBoolean("Fullscreen", false)) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        if (preferences.getBoolean("SetFullscreen", false)) {
+            LOG.d(TAG, "The SetFullscreen configuration is deprecated in favor of Fullscreen, and will be removed in a future version.");
+            preferences.set("Fullscreen", true);
+        }
+        if (preferences.getBoolean("Fullscreen", false)) {
+            // NOTE: use the FullscreenNotImmersive configuration key to set the activity in a REAL full screen
+            // (as was the case in previous cordova versions)
+            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) && !preferences.getBoolean("FullscreenNotImmersive", false)) {
+                immersiveMode = true;
+            } else {
+                getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
         } else {
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
@@ -125,12 +137,11 @@ public class CordovaActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         cordovaInterface = makeCordovaInterface();
-        if(savedInstanceState != null)
-        {
+        if (savedInstanceState != null) {
             cordovaInterface.restoreInstanceState(savedInstanceState);
         }
     }
-    
+
     protected void init() {
         appView = makeWebView();
         createViews();
@@ -169,9 +180,14 @@ public class CordovaActivity extends Activity {
         setContentView(appView.getView());
 
         if (preferences.contains("BackgroundColor")) {
-            int backgroundColor = preferences.getInteger("BackgroundColor", Color.BLACK);
-            // Background of activity:
-            appView.getView().setBackgroundColor(backgroundColor);
+            try {
+                int backgroundColor = preferences.getInteger("BackgroundColor", Color.BLACK);
+                // Background of activity:
+                appView.getView().setBackgroundColor(backgroundColor);
+            }
+            catch (NumberFormatException e){
+                e.printStackTrace();
+            }
         }
 
         appView.getView().requestFocusFromTouch();
@@ -179,7 +195,7 @@ public class CordovaActivity extends Activity {
 
     /**
      * Construct the default web view object.
-     *
+     * <p/>
      * Override this to customize the webview that is used.
      */
     protected CordovaWebView makeWebView() {
@@ -223,19 +239,22 @@ public class CordovaActivity extends Activity {
         LOG.d(TAG, "Paused the activity.");
 
         if (this.appView != null) {
-            this.appView.handlePause(this.keepRunning);
+            // CB-9382 If there is an activity that started for result and main activity is waiting for callback
+            // result, we shoudn't stop WebView Javascript timers, as activity for result might be using them
+            boolean keepRunning = this.keepRunning || this.cordovaInterface.activityResultCallback != null;
+            this.appView.handlePause(keepRunning);
         }
     }
 
     /**
      * Called when the activity receives a new intent
-     **/
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         //Forward to plugins
         if (this.appView != null)
-           this.appView.onNewIntent(intent);
+            this.appView.onNewIntent(intent);
     }
 
     /**
@@ -245,7 +264,7 @@ public class CordovaActivity extends Activity {
     protected void onResume() {
         super.onResume();
         LOG.d(TAG, "Resumed the activity.");
-        
+
         if (this.appView == null) {
             return;
         }
@@ -297,6 +316,26 @@ public class CordovaActivity extends Activity {
         }
     }
 
+    /**
+     * Called when view focus is changed
+     */
+    @SuppressLint("InlinedApi")
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus && immersiveMode) {
+            final int uiOptions = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+            getWindow().getDecorView().setSystemUiVisibility(uiOptions);
+        }
+    }
+
+    @SuppressLint("NewApi")
     @Override
     public void startActivityForResult(Intent intent, int requestCode, Bundle options) {
         // Capture requestCode here so that it is captured in the setActivityResultCallback() case.
@@ -308,10 +347,10 @@ public class CordovaActivity extends Activity {
      * Called when an activity you launched exits, giving you the requestCode you started it with,
      * the resultCode it returned, and any additional data from it.
      *
-     * @param requestCode       The request code originally supplied to startActivityForResult(),
-     *                          allowing you to identify who this result came from.
-     * @param resultCode        The integer result code returned by the child activity through its setResult().
-     * @param intent            An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
+     * @param requestCode The request code originally supplied to startActivityForResult(),
+     *                    allowing you to identify who this result came from.
+     * @param resultCode  The integer result code returned by the child activity through its setResult().
+     * @param intent      An Intent, which can return result data to the caller (various data can be attached to Intent "extras").
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -324,9 +363,9 @@ public class CordovaActivity extends Activity {
      * Report an error to the host application. These errors are unrecoverable (i.e. the main resource is unavailable).
      * The errorCode parameter corresponds to one of the ERROR_* constants.
      *
-     * @param errorCode    The error code corresponding to an ERROR_* value.
-     * @param description  A String describing the error.
-     * @param failingUrl   The url that failed to load.
+     * @param errorCode   The error code corresponding to an ERROR_* value.
+     * @param description A String describing the error.
+     * @param failingUrl  The url that failed to load.
      */
     public void onReceivedError(final int errorCode, final String description, final String failingUrl) {
         final CordovaActivity me = this;
@@ -415,9 +454,9 @@ public class CordovaActivity extends Activity {
     /**
      * Called when a message is sent to plugin.
      *
-     * @param id            The message id
-     * @param data          The message data
-     * @return              Object or null
+     * @param id   The message id
+     * @param data The message data
+     * @return Object or null
      */
     public Object onMessage(String id, Object data) {
         if ("onReceivedError".equals(id)) {
@@ -433,8 +472,7 @@ public class CordovaActivity extends Activity {
         return null;
     }
 
-    protected void onSaveInstanceState(Bundle outState)
-    {
+    protected void onSaveInstanceState(Bundle outState) {
         cordovaInterface.onSaveInstanceState(outState);
         super.onSaveInstanceState(outState);
     }
@@ -442,7 +480,7 @@ public class CordovaActivity extends Activity {
     /**
      * Called by the system when the device configuration changes while your activity is running.
      *
-     * @param newConfig		The new device configuration
+     * @param newConfig The new device configuration
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -455,4 +493,27 @@ public class CordovaActivity extends Activity {
             pm.onConfigurationChanged(newConfig);
         }
     }
+
+    /**
+     * Called by the system when the user grants permissions
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[],
+                                           int[] grantResults) {
+        try
+        {
+            cordovaInterface.onRequestPermissionResult(requestCode, permissions, grantResults);
+        }
+        catch (JSONException e)
+        {
+            LOG.d(TAG, "JSONException: Parameters fed into the method are not valid");
+            e.printStackTrace();
+        }
+
+    }
+
 }

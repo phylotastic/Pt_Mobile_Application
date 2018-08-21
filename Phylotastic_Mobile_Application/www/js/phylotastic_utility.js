@@ -93,6 +93,34 @@ function getTypeWebBrowser() {
     }  
 };
 
+function openPage(address) {
+    var url = address;
+    var target = '_blank';
+   var options = "location = no"
+   var ref = cordova.InAppBrowser.open(url, target, options);
+   
+   ref.addEventListener('loadstart', loadstartCallback);
+   ref.addEventListener('loadstop', loadstopCallback);
+   ref.addEventListener('loaderror', loaderrorCallback);
+   ref.addEventListener('exit', exitCallback);
+
+   function loadstartCallback(event) {
+      console.log('Loading started: '  + event.url)
+   }
+
+   function loadstopCallback(event) {
+      console.log('Loading finished: ' + event.url)
+   }
+
+   function loaderrorCallback(error) {
+      console.log('Loading error: ' + error.message)
+   }
+
+   function exitCallback() {
+      console.log('Browser is closed...')
+   }
+}
+
 function checkExist(value, JSONArray){
 		var hasMatch =false;
 		for (var index = 0; index < JSONArray.length; index++) {

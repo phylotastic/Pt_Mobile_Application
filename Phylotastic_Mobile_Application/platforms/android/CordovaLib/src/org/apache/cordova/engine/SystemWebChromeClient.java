@@ -18,13 +18,14 @@
 */
 package org.apache.cordova.engine;
 
+import java.util.Arrays;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -36,6 +37,7 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebStorage;
 import android.webkit.WebView;
+import android.webkit.PermissionRequest;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -59,15 +61,17 @@ public class SystemWebChromeClient extends WebChromeClient {
 
     // the video progress view
     private View mVideoProgressView;
-    
+
     private CordovaDialogsHelper dialogsHelper;
+    private Context appContext;
 
     private WebChromeClient.CustomViewCallback mCustomViewCallback;
     private View mCustomView;
 
     public SystemWebChromeClient(SystemWebViewEngine parentEngine) {
         this.parentEngine = parentEngine;
-        dialogsHelper = new CordovaDialogsHelper(parentEngine.webView.getContext());
+        appContext = parentEngine.webView.getContext();
+        dialogsHelper = new CordovaDialogsHelper(appContext);
     }
 
     /**
@@ -172,14 +176,23 @@ public class SystemWebChromeClient extends WebChromeClient {
     /**
      * Instructs the client to show a prompt to ask the user to set the Geolocation permission state for the specified origin.
      *
+     * This also checks for the Geolocation Plugin and requests permission from the application  to use Geolocation.
+     *
      * @param origin
      * @param callback
      */
     public void onGeolocationPermissionsShowPrompt(String origin, Callback callback) {
         super.onGeolocationPermissionsShowPrompt(origin, callback);
         callback.invoke(origin, true, false);
+        //Get the plugin, it should be loaded
+        CordovaPlugin geolocation = parentEngine.pluginManager.getPlugin("Geolocation");
+        if(geolocation != null && !geolocation.hasPermisssion())
+        {
+            geolocation.requestPermissions(0);
+        }
+
     }
-    
+
     // API level 7 is required for this, see if we could lower this using something else
     @Override
     public void onShowCustomView(View view, WebChromeClient.CustomViewCallback callback) {
@@ -199,9 +212,9 @@ public class SystemWebChromeClient extends WebChromeClient {
      */
     public View getVideoLoadingProgressView() {
 
-        if (mVideoProgressView == null) {            
+        if (mVideoProgressView == null) {
             // Create a new Loading view programmatically.
-            
+
             // create the linear layout
             LinearLayout layout = new LinearLayout(parentEngine.getView().getContext());
             layout.setOrientation(LinearLayout.VERTICAL);
@@ -212,12 +225,12 @@ public class SystemWebChromeClient extends WebChromeClient {
             ProgressBar bar = new ProgressBar(parentEngine.getView().getContext());
             LinearLayout.LayoutParams barLayoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
             barLayoutParams.gravity = Gravity.CENTER;
-            bar.setLayoutParams(barLayoutParams);   
+            bar.setLayoutParams(barLayoutParams);
             layout.addView(bar);
-            
+
             mVideoProgressView = layout;
         }
-    return mVideoProgressView; 
+    return mVideoProgressView;
     }
 
     // <input type=file> support:
@@ -226,11 +239,11 @@ public class SystemWebChromeClient extends WebChromeClient {
     public void openFileChooser(ValueCallback<Uri> uploadMsg) {
         this.openFileChooser(uploadMsg, "*/*");
     }
-    
+
     public void openFileChooser( ValueCallback<Uri> uploadMsg, String acceptType ) {
         this.openFileChooser(uploadMsg, acceptType, null);
     }
-    
+
     public void openFileChooser(final ValueCallback<Uri> uploadMsg, String acceptType, String capture)
     {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -240,7 +253,7 @@ public class SystemWebChromeClient extends WebChromeClient {
             @Override
             public void onActivityResult(int requestCode, int resultCode, Intent intent) {
                 Uri result = intent == null || resultCode != Activity.RESULT_OK ? null : intent.getData();
-                Log.d(LOG_TAG, "Receive file chooser URL: " + result);
+                LOG.d(LOG_TAG, "Receive file chooser URL: " + result);
                 uploadMsg.onReceiveValue(result);
             }
         }, intent, FILECHOOSER_RESULTCODE);
@@ -255,15 +268,22 @@ public class SystemWebChromeClient extends WebChromeClient {
                 @Override
                 public void onActivityResult(int requestCode, int resultCode, Intent intent) {
                     Uri[] result = WebChromeClient.FileChooserParams.parseResult(resultCode, intent);
-                    Log.d(LOG_TAG, "Receive file chooser URL: " + result);
+                    LOG.d(LOG_TAG, "Receive file chooser URL: " + result);
                     filePathsCallback.onReceiveValue(result);
                 }
             }, intent, FILECHOOSER_RESULTCODE);
         } catch (ActivityNotFoundException e) {
-            Log.w("No activity found to handle file chooser intent.", e);
+            LOG.w("No activity found to handle file chooser intent.", e);
             filePathsCallback.onReceiveValue(null);
         }
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void onPermissionRequest(final PermissionRequest request) {
+        LOG.d(LOG_TAG, "onPermissionRequest: " + Arrays.toString(request.getResources()));
+        request.grant(request.getResources());
     }
 
     public void destroyLastDialog(){
