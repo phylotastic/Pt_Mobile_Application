@@ -111,7 +111,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
         };
 
-        $scope.selectSpeciesName = function (name) {
+        $scope.selectSpeciesName = function (species) {
             /*
         var alertPopup = $ionicPopup.alert({
              title: 'Phylotastic',
@@ -119,47 +119,52 @@ angular.module('ionicApp.controller', ['ngCordova'])
              template: name
 		});
         */
-            if (checkNetConnection() === true) {
-                /*$ionicLoading.show({
-                    template: '<ion-spinner icon="ios"></ion-spinner> services are working...'
-                });*/
-                var startTime_eol = new Date().getTime();
-                console.log("zxv: " + "running eol link search on " + name);
-                $http({
-                    method: 'POST',
-                    url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/sl/eol/get_links",
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    timeout: TIMEOUT_CONNECTION,
-                    transformRequest: function (obj) {
-                        var str = [];
-                        for (var p in obj)
-                            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-                        return str.join("&");
-                    },
-                    data: {
-                        species: name
-                    }
-                }).success(
-                    function (data, status, headers, config) {
-                        //$ionicLoading.hide();
-                        console.log("zxv: " + "Phylotastic - EOL link results : " + JSON.stringify(data));
-                        window.open(data.species[0].species_info_link, '_system', 'location=no');
-                        //openPage(data.species[0].species_info_link);
-                    }).error(
-                    function (err) {
-                        //$ionicLoading.hide();
-                        console.log("zxv: " + "error : " + err.error);
-                    });
+            if (!species.eol || species.eol === ""){
+                var name = species.name;
+                if (checkNetConnection() === true) {
+                    /*$ionicLoading.show({
+                        template: '<ion-spinner icon="ios"></ion-spinner> services are working...'
+                    });*/
+                    var startTime_eol = new Date().getTime();
+                    console.log("zxv: " + "running eol link search on " + name);
+                    $http({
+                        method: 'POST',
+                        url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/sl/eol/get_links",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        timeout: TIMEOUT_CONNECTION,
+                        transformRequest: function (obj) {
+                            var str = [];
+                            for (var p in obj)
+                                str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                            return str.join("&");
+                        },
+                        data: {
+                            species: name
+                        }
+                    }).success(
+                        function (data, status, headers, config) {
+                            //$ionicLoading.hide();
+                            console.log("zxv: " + "Phylotastic - EOL link results : " + JSON.stringify(data));
+                            window.open(data.species[0].species_info_link, '_system', 'location=no');
+                            //openPage(data.species[0].species_info_link);
+                        }).error(
+                        function (err) {
+                            //$ionicLoading.hide();
+                            console.log("zxv: " + "error : " + err.error);
+                        });
 
-            } else {
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Oops !',
-                    cssClass: 'custom-popup',
-                    template: 'Network error. Please check your connection and try again.'
-                });
-                return;
+                } else {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Oops !',
+                        cssClass: 'custom-popup',
+                        template: 'Network error. Please check your connection and try again.'
+                    });
+                    return;
+                }
+            } else{
+                window.open(species.eol, '_system', 'location=no');
             }
         };
 
@@ -708,15 +713,18 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                     return str.join("&");
                                 },
                                 data: {
-                                    text: contentOCR_Text_Result
+                                    text: contentOCR_Text_Result,
+                                    data_source_ids: 12
                                 }
                             }).success(
                                 function (data, status, headers, config) {
                                     $ionicLoading.hide();
+                                    console.log("zxv: " + "success");
                                     console.log("zxv: " + "Phylotastic - GNRD results : " + JSON.stringify(data));
                                     if (!isEmpty(data)) {
                                         if (!isEmpty(data.names) && Object.prototype.toString.call(data.names) === '[object Array]'){
-                                            scientific_names_list = data.names;
+                                            var scientific_names_list = data.names;
+                                            var eol_link_list = data.resolved_names;
                                         //if (!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]') {
                                             //scientific_names_list = data.scientificNames;
                                             if (scientific_names_list.length > 0) {
@@ -756,7 +764,12 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
                                                 for (var index = 0; index < scientific_names_list.length; index++) {
                                                     if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index].scientificName) == false) {
-                                                        add_Species_to_Collection(cur_collection, scientific_names_list[index].scientificName); // add name to list if not already there
+                                                        var new_species = {
+                                                                "name": scientific_names_list[index].scientificName,
+                                                                "eol": eol_link_list[index].results[0].url
+                                                            };
+                                                        add_species_to_collection(cur_collection, new_species); // add name to list if not already there
+                                                        
                                                     }
                                                 }
                                                 window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
@@ -987,7 +1000,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 {
                 "name":"Gallus gallus", 
                 // generate these if possible
-                //"eol":"http://eol.org/pages/1049263/overview",
+                "eol":"http://eol.org/pages/1049263",
                 //"cName":"Red Junglefowl"
                 }]
         };

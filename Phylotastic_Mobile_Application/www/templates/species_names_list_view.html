@@ -26,7 +26,7 @@
         -->
           <div ng-hide="!species_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
              <ion-list>
-                   <ion-item ng-repeat="species in species_list track by $index" ng-click="selectSpeciesName(species.name)" style="vertical-align: middle">
+                   <ion-item ng-repeat="species in species_list track by $index" ng-click="selectSpeciesName(species)" style="vertical-align: middle">
                       <div class="swipe" on-swipe-right="confirmDelete(species.name);">
                           <p id="{{species.name}}">{{species.name}}</p>
                       </div> 

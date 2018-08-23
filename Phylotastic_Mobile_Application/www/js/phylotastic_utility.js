@@ -209,13 +209,16 @@ function remove_Species_from_Collection(name, collection){
 	return false;
 };
 
-function add_Species_to_Collection(collection, name){
-	speciesName = name.toString().trim();
-	if (!isEmpty(speciesName)){
-		collection.species.push({"name":speciesName});
+function add_species_to_collection(collection, species){
+	//var speciesName = species.name.toString().trim();
+	//if (!isEmpty(speciesName)){
+		collection.species.push(species);
         collection.quantity++;
-	}
+    console.log("zxv: " + JSON.stringify(species) + "added");
+	//}
 };
+
+//function add_link_to_species()
 // end
 
 function delete_SpeciesList_into_Master_List(species_list_object,JSONArray){
