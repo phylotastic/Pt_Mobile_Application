@@ -9,6 +9,7 @@
     </ion-nav-buttons>
     <ion-content class="padding common-body" overflow-scroll="true">
         <br/>
+        <!--
         <div ng-hide="!species_names_list.length" style="margin-top: 20px; margin-left:10px; margin-right:10px">
             <ion-list>
                 <ion-item ng-repeat="species_name in species_names_list track by $index" ng-click="selectSpeciesName(species_name)" style="vertical-align: middle">
@@ -22,11 +23,11 @@
             <div class="item item-input">The list is empty. </div>
             <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>
         </div>
-        <!--
+        -->
           <div ng-hide="!species_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
              <ion-list>
                    <ion-item ng-repeat="species in species_list track by $index" ng-click="selectSpeciesName(species.name)" style="vertical-align: middle">
-                      <div class="swipe" on-swipe-right="confirmDelete(species);">
+                      <div class="swipe" on-swipe-right="confirmDelete(species.name);">
                           <p id="{{species.name}}">{{species.name}}</p>
                       </div> 
                    </ion-item>
@@ -36,7 +37,6 @@
              <div class="item item-input">The list is empty. </div>
              <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>	 
          </div>
-        -->
         <br/>
     </ion-content>
     <!--  

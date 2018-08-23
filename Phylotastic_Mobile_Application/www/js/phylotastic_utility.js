@@ -188,7 +188,7 @@ function delete_SpecieName_into_SpeciesNames_List(specieName,JSONArray){
 	return false;
 };
 
-/*
+// new functions
 function remove_Species_from_Collection(name, collection){
     var trim_name = name.toString().trim().toUpperCase();
     var list = collection.species;
@@ -198,6 +198,8 @@ function remove_Species_from_Collection(name, collection){
 	    	   list.splice(index, 1);
                collection.species = list;
                collection.quantity--;
+               
+               console.log("zxv: " + trim_name + " deleted");
 	    	   return true;
 	       } else{
 	    	   return false;
@@ -214,7 +216,7 @@ function add_Species_to_Collection(collection, name){
         collection.quantity++;
 	}
 };
-*/
+// end
 
 function delete_SpeciesList_into_Master_List(species_list_object,JSONArray){
 	for (var index = 0; index < JSONArray.length; index++) {

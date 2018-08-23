@@ -68,18 +68,18 @@ angular.module('ionicApp.controller', ['ngCordova'])
     .controller('Species_Names_List_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout) {
         console.log("zxv: " + "View Species Names List");
         /* Global variable */
-        var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
-        var cur_species_list_object = JSON.parse(window.localStorage.getItem("currect_species_list_object"));
-    /* 
+        //var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
+        //var cur_species_list_object = JSON.parse(window.localStorage.getItem("currect_species_list_object"));
+    
         var cur_collection = JSON.parse(window.localStorage.getItem("current_collection"));
         
         $scope.collection_name = cur_collection.name;
         $scope.species_list = cur_collection.species;
-    */
+    
         var email = window.localStorage.getItem('current_email_phylotastic');
         /* List data in list */
-        $scope.species_names_list = cur_species_names_list;
-        $scope.species_list_name = cur_species_list_object.species_list_name;
+        //$scope.species_names_list = cur_species_names_list;
+        //$scope.species_list_name = cur_species_list_object.species_list_name;
 
         //console.log("zxv: " + window.localStorage.getItem("current_species_names_list"));
         //console.log("zxv: " + "local storage: " + window.localStorage.getItem("currect_species_list_object"));
@@ -97,8 +97,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
             $state.go("phylotastic.how_to_page");
         };
         $scope.build_view_tree = function () {
-            //if (cur_collection.species.length > 0) {
-            if (!isEmpty(cur_species_names_list) && cur_species_names_list.length > 0) {
+            if (cur_collection.species.length > 0) {
+            //if (!isEmpty(cur_species_names_list) && cur_species_names_list.length > 0) {
                 $state.go("phylotastic.tree_view");
             } else {
                 var alertPopup = $ionicPopup.alert({
@@ -179,11 +179,12 @@ angular.module('ionicApp.controller', ['ngCordova'])
                     //document.getElementById(item).innerHTML = item;
                     document.getElementById(item).style.color = "black";
                     console.log("zxv: " + item);
+                /*
                     var delete_result = delete_SpecieName_into_SpeciesNames_List(item, cur_species_names_list);
                     if (delete_result) {
 
                         //$scope.species_names_list = "";
-                        /* Update to current object */
+                        // Update to current object 
                         var main_object_species_list_list = JSON.parse(window.localStorage.getItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC"));
                         var current_species_list_object = JSON.parse(window.localStorage.getItem("currect_species_list_object"));
                         update_object_of_master_list(current_species_list_object, cur_species_names_list);
@@ -191,10 +192,11 @@ angular.module('ionicApp.controller', ['ngCordova'])
                         window.localStorage.setItem("current_species_names_list", JSON.stringify(cur_species_names_list));
                         update_master_list(current_species_list_object, main_object_species_list_list);
                         window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC", JSON.stringify(main_object_species_list_list));
-                        /* End Update */
+                        // End Update 
                         $scope.species_names_list = cur_species_names_list;
                     }
-                /*
+                */
+                
                     var delete_result = remove_Species_from_Collection(item, cur_collection);
                     if (delete_result) {
                         var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS"));
@@ -206,8 +208,9 @@ angular.module('ionicApp.controller', ['ngCordova'])
                         window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections));
                         
                         $scope.species_list = cur_collection.species;
+                        console.log("zxv: " + "deletion saved");
                     }
-                */
+                
 
                 } else {
                     //document.getElementById(item).innerHTML = item;
@@ -223,14 +226,26 @@ angular.module('ionicApp.controller', ['ngCordova'])
     .controller('Tree_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout) {
         console.log("zxv: " + "Tree View Controller");
         /* Global variable */
-        var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
+        //var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
+        var cur_collection = JSON.parse(window.localStorage.getItem("current_collection"));
+        var cur_species_list = cur_collection.species;
         var produced_taxa_species_names = "";
         var boolean_getResultOpenTree = false;
+    /*
         for (var i = 0; i < cur_species_names_list.length; i++) {
             if (i == cur_species_names_list.length - 1) {
                 produced_taxa_species_names = produced_taxa_species_names + cur_species_names_list[i];
             } else {
                 produced_taxa_species_names = produced_taxa_species_names + cur_species_names_list[i] + "|";
+            }
+
+        }
+    */
+        for (var i = 0; i < cur_species_list.length; i++) {
+            if (i == cur_species_list.length - 1) {
+                produced_taxa_species_names += cur_species_list[i].name;
+            } else {
+                produced_taxa_species_names += cur_species_list[i].name + "|";
             }
 
         }
@@ -316,7 +331,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 }
             }).success(
                 function (data, status, headers, config) {
-                    console.log("zxv: " + "Da lay duoc Result from OpenTree : " + data);
+                    console.log("zxv: " + "Result from OpenTree : " + JSON.stringify(data));
                     $ionicLoading.hide();
                     boolean_getResultOpenTree = true;
                     var tree_data = data;
@@ -355,8 +370,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                     }
 
                 }).error(function (err) {
-                console.log("zxv: " + "Deo hieu");
-                console.log("zxv: " + err.error);
+                console.log("zxv: " + "Error");
+                console.log("zxv: " + JSON.stringify(err));
                 $ionicLoading.hide();
                 var respTime = new Date().getTime() - startTime;
                 if (respTime >= TIMEOUT_CONNECTION) {
@@ -574,8 +589,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /****************************************/
     .controller('Image_View_Ctrl', function ($scope, $state, $http, $ionicLoading, $cordovaCamera, $ionicPopup, $timeout) {
         console.log("zxv: " + "Image View Controller");
-        console.log("zxv: " + window.localStorage.getItem("current_species_names_list"));
-        console.log("zxv: " + window.localStorage.getItem("currect_species_list_object"));
+        //console.log("zxv: " + window.localStorage.getItem("current_species_names_list"));
+        //console.log("zxv: " + window.localStorage.getItem("currect_species_list_object"));
     
         var photo_data = JSON.parse(window.localStorage.getItem("current_photo_data_phylotastic"));
         var email = window.localStorage.getItem('current_email_phylotastic');
@@ -703,7 +718,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                             scientific_names_list = data.scientificNames;
                                             if (scientific_names_list.length > 0) {
 
-                                                /* add to current_species_names_list */
+                                                // add to current_species_names_list 
+                                            /*
                                                 var current_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list")); // get current list from local storage
 
 
@@ -720,7 +736,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                                     var current_species_list_object = JSON.parse(window.localStorage.getItem("currect_species_list_object")); // get object of current list?
                                                     var main_object_species_list_list = JSON.parse(window.localStorage.getItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC")); // get list of list objs
 
-                                                    /** Save to current species lists **/
+                                                    // Save to current species lists
                                                     update_object_of_master_list(current_species_list_object, current_species_names_list); // update current list obj with new list
 
                                                     window.localStorage.setItem("currect_species_list_object", JSON.stringify(current_species_list_object)); // store obj back into local storage
@@ -728,22 +744,24 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                                     update_master_list(current_species_list_object, main_object_species_list_list); // update list of list objs with new obj
 
                                                     window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC", JSON.stringify(main_object_species_list_list)); // store list of list objs
-                                                    /*  End */
-                                                /*
-                                                    var cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
-
-                                                    for (var index = 0; index < scientific_names_list.length; index++) {
-                                                        if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index]) == false) {
-                                                            add_Species_to_Collection(cur_collection, scientific_names_list[index]); // add name to list if not already there
-                                                        }
-                                                    }
-                                                    window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
-                                                    var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS")); // get list of list objs
-                                                    update_master_list(cur_collection, all_collections); // update list of list objs with new obj
-                                                    window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections)); // store list of list objs
-
-                                                */
+                                                    //  End 
                                                 }
+                                            */
+                                                
+                                            
+                                                var cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
+
+                                                for (var index = 0; index < scientific_names_list.length; index++) {
+                                                    if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index]) == false) {
+                                                        add_Species_to_Collection(cur_collection, scientific_names_list[index]); // add name to list if not already there
+                                                    }
+                                                }
+                                                window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
+                                                var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS")); // get list of list objs
+                                                update_master_list(cur_collection, all_collections); // update list of list objs with new obj
+                                                window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections)); // store list of list objs
+
+                                            
                                                 
                                             
                                                 var message = "";
@@ -943,6 +961,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
         //console.log("zxv: " + $state);
         /** Fake Data **/
+    /*
         var jsonPhylotasticData = [
             {
                 "id": 1,
@@ -953,8 +972,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 "species": []
 			      }
 			 ];
-    
-    /*
+    */
+    /**/
         var exampleCollection = 
         {
             "id": 1,
@@ -969,7 +988,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 //"cName":"Red Junglefowl"
                 }]
         };
-
+    /**/
         /** Activity **/
         $scope.gotoHome = function () {
             console.log("zxv: " + "Di home");
@@ -1002,8 +1021,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
             // An elaborate, custom popup
             var myPopup = $ionicPopup.show({
-                template: '<input type="text" ng-model="data.new_species_list_object_name">',
-                //template: '<input type="text" ng-model="data.new_collection_name">',
+                //template: '<input type="text" ng-model="data.new_species_list_object_name">',
+                template: '<input type="text" ng-model="data.new_collection_name">',
                 title: 'Enter new list name',
                 cssClass: 'custom-popup',
                 scope: $scope,
@@ -1015,10 +1034,11 @@ angular.module('ionicApp.controller', ['ngCordova'])
                         text: '<b>Save</b>',
                         type: 'button-positive',
                         onTap: function (e) {
+                        /*
                             if (!$scope.data.new_species_list_object_name) {
                                 return;
                             } else {
-                                /* Add new species list object */
+                                // Add new species list object 
                                 //Register new object
                                 var JSON_OBJECT_STRING = JSON.parse(window.localStorage.getItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC"));
                                 var maximum_id = getMaxID(JSON_OBJECT_STRING);
@@ -1036,12 +1056,14 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                 $scope.species_lists = JSON_OBJECT_STRING;
 
                             }
-                            /*
+                        */
+                        /**/
                             if (!$scope.data.new_collection_name) {
                                 return;
                             } else {
                                 //Register new object
                                 var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS"));
+                                console.log("zxv: " + all_collections);
                                 var maximum_id = getMaxID(all_collections);
                                 d = new Date();
                                 var current_date = d.yyyymmdd();
@@ -1055,15 +1077,16 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                 all_collections.push(newObject);
                                 window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections));
                                 $scope.collections = all_collections;
+                                console.log("zxv: " + "collection added");
 
                             }
-                            */
+                        /**/
                         }
-    		      }
+                    }
     		    ]
             });
         }
-        /***************/
+    /*
         $scope.confirmDelete = function (species_list_object) {
             //console.log("zxv: " + species_list_object);
             document.getElementById(species_list_object.id).style.color = "red";
@@ -1075,14 +1098,14 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
             confirmPopup.then(function (res) {
                 if (res) {
-                    /* Remove item out of list */
+                    // Remove item out of list 
                     document.getElementById(species_list_object.id).style.color = "black";
                     var JSON_OBJECT_STRING = JSON.parse(window.localStorage.getItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC"));
                     var delete_result = delete_SpeciesList_into_Master_List(species_list_object, JSON_OBJECT_STRING);
                     if (delete_result) {
-                        /* Update to current object */
+                        // Update to current object 
                         window.localStorage.setItem(email + "_" + "LIST_SPECIES_LISTS_PHYLOTASTIC", JSON.stringify(JSON_OBJECT_STRING));
-                        /* End Update */
+                        // End Update 
                         $scope.species_lists = JSON_OBJECT_STRING;
                     }
                 } else {
@@ -1092,8 +1115,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 }
             });
         };
-    
-    /*
+    */
+    /**/
         $scope.confirmDelete = function (collection) {
             //console.log("zxv: " + collection);
             document.getElementById(collection.id).style.color = "red";
@@ -1122,8 +1145,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 }
             });
         };
-    */
-
+    /**/
+    /*
         $scope.selectSpeciesList = function (species_list) {
             window.localStorage.setItem("current_species_names_list", JSON.stringify(species_list.species)); // store list of species into local storage
             //console.log("zxv: " + species_list.species)
@@ -1131,15 +1154,15 @@ angular.module('ionicApp.controller', ['ngCordova'])
             //console.log("zxv: " + "prestringify: " + species_list)
             $state.go("phylotastic.species_names_list_view");
         };
-    
-    /*
+    */
+    /**/
         $scope.selectSpeciesList = function (collection) {
             window.localStorage.setItem("current_collection", JSON.stringify(collection)); // store object of list in local storage
             $state.go("phylotastic.species_names_list_view");
         };
-    */
-
-        /** Scenario **/
+    /**/
+    /*
+        // Scenario 
         var email = window.localStorage.getItem('current_email_phylotastic');
         var recorder_name = email;
         console.log("zxv: " + "LIST of " + email);
@@ -1147,7 +1170,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         var empty_species_names_list = [];
         window.localStorage.setItem("current_species_names_list", JSON.stringify(empty_species_names_list));
         window.localStorage.removeItem("currect_species_list_object");
-        /* Should be Processed Caching Data in HERE */
+        // Should be Processed Caching Data in HERE
         //$ionicLoading.show({
         //      template: 'Loading Species Lists data...'
         //});
@@ -1167,8 +1190,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
             console.log("zxv: " + JSON_OBJECT_STRING);
             $scope.species_lists = JSON_OBJECT_STRING;
         }
-    
-    /*
+    */
+    /**/
         var email = window.localStorage.getItem('current_email_phylotastic');
         var recorder_name = email;
         console.log("zxv: " + "LIST of " + email);
@@ -1182,8 +1205,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
         window.localStorage.setItem("current_collection", JSON.stringify(empty_collection));
         
         if (previous_page === "LOGIN_PAGE") {
-            console.log("zxv: " + jsonPhylotasticData);
-            var all_collections = jsonPhylotasticData;
+            console.log("zxv: " + exampleCollection);
+            var all_collections = [exampleCollection];
             console.log("zxv: " + all_collections);
             $scope.collections = all_collections;
             window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC", "LIST_SPECIES_LISTS_PAGE");
@@ -1192,12 +1215,18 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 window.localStorage.setItem(email + "_" + "COLLECTIONS", localPlots);
             }
         } else {
-            $scope.collections = {};
+            $scope.collections = [];
             var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS"));
-            console.log("zxv: " + all_collections);
-            $scope.collections = all_collections;
+            console.log("zxv: " + window.localStorage.getItem(email + "_" + "COLLECTIONS"));
+            if (all_collections != null){
+                console.log("zxv: " + "collections loaded");
+                $scope.collections = all_collections;
+            } else {
+                window.localStorage.setItem(email + "_" + "COLLECTIONS", "[]");
+                console.log("zxv: " + "collections initialized");
+            }
         }
-    */
+    /**/
         //$ionicLoading.hide();
 
     }); // End HomePageCtrl
