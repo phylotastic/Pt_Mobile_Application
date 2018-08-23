@@ -188,6 +188,34 @@ function delete_SpecieName_into_SpeciesNames_List(specieName,JSONArray){
 	return false;
 };
 
+/*
+function remove_Species_from_Collection(name, collection){
+    var trim_name = name.toString().trim().toUpperCase();
+    var list = collection.species;
+	for (var index = 0; index < list.length; index++) {
+	    if(trim_name === list[index].name.toString().trim().toUpperCase()){
+	       if (index > - 1){
+	    	   list.splice(index, 1);
+               collection.species = list;
+               collection.quantity--;
+	    	   return true;
+	       } else{
+	    	   return false;
+	       }
+	    } 
+	}
+	return false;
+};
+
+function add_Species_to_Collection(collection, name){
+	speciesName = name.toString().trim();
+	if (!isEmpty(speciesName)){
+		collection.species.push({"name":speciesName});
+        collection.quantity++;
+	}
+};
+*/
+
 function delete_SpeciesList_into_Master_List(species_list_object,JSONArray){
 	for (var index = 0; index < JSONArray.length; index++) {
 	    var deleted_species_names_list = JSONArray[index];

@@ -1,30 +1,45 @@
 <link href="css/common.css" rel="stylesheet">
 <ion-view hide-back-button="false" cache-view="false">
-  <ion-nav-title>
-      
-  </ion-nav-title>
-  <ion-nav-buttons side="right" style="color: grey;">
+    <ion-nav-title>
+
+    </ion-nav-title>
+    <ion-nav-buttons side="right" style="color: grey;">
         <a class="button button-icon icon ion-ios-eye" ng-click="build_view_tree();">Get Tree</a>
         <a class="button button-icon icon ion-ios-loop-strong" ui-sref="phylotastic.home_page">Switch List</a>
- </ion-nav-buttons>          
-  <ion-content class="padding common-body" overflow-scroll="true">
-     <br/>
-     <div ng-hide="!species_names_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
-	     <ion-list>
-			   <ion-item ng-repeat="species_name in species_names_list track by $index" ng-click="selectSpeciesName(species_name)" style="vertical-align: middle">
-				  <div class="swipe" on-swipe-right="confirmDelete(species_name);">
-				      <p id="{{species_name}}">{{species_name}}</p>
-				  </div> 
-			   </ion-item>
-	     </ion-list>	 
-     </div>
-     <div ng-hide="species_names_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
-	     <div class="item item-input">The list is empty. </div>
-	     <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>	 
-     </div>
-	 <br/> 
-  </ion-content>
-  <!--  
+    </ion-nav-buttons>
+    <ion-content class="padding common-body" overflow-scroll="true">
+        <br/>
+        <div ng-hide="!species_names_list.length" style="margin-top: 20px; margin-left:10px; margin-right:10px">
+            <ion-list>
+                <ion-item ng-repeat="species_name in species_names_list track by $index" ng-click="selectSpeciesName(species_name)" style="vertical-align: middle">
+                    <div class="swipe" on-swipe-right="confirmDelete(species_name);">
+                        <p id="{{species_name}}">{{species_name}}</p>
+                    </div>
+                </ion-item>
+            </ion-list>
+        </div>
+        <div ng-hide="species_names_list.length" style="margin-top: 20px; margin-left:10px; margin-right:10px">
+            <div class="item item-input">The list is empty. </div>
+            <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>
+        </div>
+        <!--
+          <div ng-hide="!species_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
+             <ion-list>
+                   <ion-item ng-repeat="species in species_list track by $index" ng-click="selectSpeciesName(species.name)" style="vertical-align: middle">
+                      <div class="swipe" on-swipe-right="confirmDelete(species);">
+                          <p id="{{species.name}}">{{species.name}}</p>
+                      </div> 
+                   </ion-item>
+             </ion-list>	 
+         </div>
+         <div ng-hide="species_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
+             <div class="item item-input">The list is empty. </div>
+             <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>	 
+         </div>
+        -->
+        <br/>
+    </ion-content>
+    <!--  
   <ion-footer-bar align-title="center" class="bar-positive" style="height:56px">
 		  <div class="buttons" ng-click="gotoHome();">
 		      <a class="button button-icon icon ion-home" style="height:55px;">&nbsp;Home</a>
@@ -38,16 +53,16 @@
 		  </div>
     </ion-footer-bar>
     -->
-   <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
-		  <div class="buttons" ng-click="gotoHome();">
-		     <a class="button button-icon icon ion-home"></a>
-		  </div>
-		  <h1 class="title"></h1>  
-		  <div  class="buttons" ng-click="gotoCamera();">
-		      <a class="button button-icon icon ion-ios-camera"></a>
-		  </div>
-		  <div class="title" ng-click="gotoHowToPage();">
-		      <a class="button button-icon icon ion-ios-help"></a>
-		  </div>
-   </ion-footer-bar>
-</ion-view>  
+    <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
+        <div class="buttons" ng-click="gotoHome();">
+            <a class="button button-icon icon ion-home"></a>
+        </div>
+        <h1 class="title"></h1>
+        <div class="buttons" ng-click="gotoCamera();">
+            <a class="button button-icon icon ion-ios-camera"></a>
+        </div>
+        <div class="title" ng-click="gotoHowToPage();">
+            <a class="button button-icon icon ion-ios-help"></a>
+        </div>
+    </ion-footer-bar>
+</ion-view>
