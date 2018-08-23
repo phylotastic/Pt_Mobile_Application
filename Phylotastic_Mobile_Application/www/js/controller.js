@@ -695,7 +695,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                             console.log("zxv: " + "Phylotastic - Submit Text to GNRD");
                             $http({
                                 method: 'POST',
-                                url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_text",
+                                url: "https://gnrd.globalnames.org/name_finder.json",
+                                //url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_text",
                                 headers: {
                                     'Content-Type': 'application/x-www-form-urlencoded'
                                 },
@@ -714,8 +715,10 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                     $ionicLoading.hide();
                                     console.log("zxv: " + "Phylotastic - GNRD results : " + JSON.stringify(data));
                                     if (!isEmpty(data)) {
-                                        if (!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]') {
-                                            scientific_names_list = data.scientificNames;
+                                        if (!isEmpty(data.names) && Object.prototype.toString.call(data.names) === '[object Array]'){
+                                            scientific_names_list = data.names;
+                                        //if (!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]') {
+                                            //scientific_names_list = data.scientificNames;
                                             if (scientific_names_list.length > 0) {
 
                                                 // add to current_species_names_list 
@@ -752,8 +755,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                                 var cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
 
                                                 for (var index = 0; index < scientific_names_list.length; index++) {
-                                                    if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index]) == false) {
-                                                        add_Species_to_Collection(cur_collection, scientific_names_list[index]); // add name to list if not already there
+                                                    if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index].scientificName) == false) {
+                                                        add_Species_to_Collection(cur_collection, scientific_names_list[index].scientificName); // add name to list if not already there
                                                     }
                                                 }
                                                 window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
@@ -766,9 +769,9 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                             
                                                 var message = "";
                                                 if (scientific_names_list.length == 1) {
-                                                    message = "Names added : " + scientific_names_list[0];
+                                                    message = "Names added : " + scientific_names_list[0].scientificName;
                                                 } else {
-                                                    message = "Names added : " + scientific_names_list[0] + " and " + (scientific_names_list.length - 1) + " others";
+                                                    message = "Names added : " + scientific_names_list[0].scientificName + " and " + (scientific_names_list.length - 1) + " others";
                                                 }
 
                                                 var confirmPopup = $ionicPopup.alert({
