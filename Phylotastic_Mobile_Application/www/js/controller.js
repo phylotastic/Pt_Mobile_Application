@@ -110,6 +110,48 @@ angular.module('ionicApp.controller', ['ngCordova'])
             }
 
         };
+    
+        $scope.addSpecies = function () {
+            console.log("zxv: " + "new species");
+            
+            $scope.data = {};
+
+            // An elaborate, custom popup
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.new_species">',
+                title: 'Enter scientific name',
+                cssClass: 'custom-popup',
+                scope: $scope,
+                buttons: [
+                    {
+                        text: 'Cancel'
+                    },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-positive',
+                        onTap: function (e) {
+                            if (!$scope.data.new_species) {
+                                return;
+                            } else {
+                                // add a gnrd check
+                                if (check_exits_name_in_list(cur_collection.species, $scope.data.new_species) == false) {
+                                    var new_species = {
+                                            "name": $scope.data.new_species,
+                                            //"eol": eol_link_list[index].results[0].url
+                                        };
+                                    add_species_to_collection(cur_collection, new_species); // add name to list if not already there
+                                                
+                                    window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
+                                    var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS")); // get list of list objs
+                                    update_master_list(cur_collection, all_collections); // update list of list objs with new obj
+                                    window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections)); // store list of list objs
+                                }
+                            }
+                        }
+                    }
+    		    ]
+            });
+        };
 
         $scope.selectSpeciesName = function (species) {
             /*
