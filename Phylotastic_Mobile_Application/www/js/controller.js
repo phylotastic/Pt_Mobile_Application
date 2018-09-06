@@ -75,6 +75,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         
         $scope.collection_name = cur_collection.name;
         $scope.species_list = cur_collection.species;
+        $scope.temporary = window.localStorage.getItem("temporary_list");
     
         var email = window.localStorage.getItem('current_email_phylotastic');
         /* List data in list */
@@ -846,6 +847,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                                  */
                                                 confirmPopup.then(function (res) {
                                                     confirmPopup.close();
+                                                    $state.go("phylotastic.species_names_list_view");
                                                     return;
                                                 });
 
@@ -1216,6 +1218,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /**/
         $scope.selectSpeciesList = function (collection) {
             window.localStorage.setItem("current_collection", JSON.stringify(collection)); // store object of list in local storage
+            window.localStorage.setItem("temporary_list", false);
             $state.go("phylotastic.species_names_list_view");
         };
     /**/
@@ -1261,6 +1264,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
             "species": []
         };
         window.localStorage.setItem("current_collection", JSON.stringify(empty_collection));
+        window.localStorage.setItem("temporary_list", true);
         
         if (previous_page === "LOGIN_PAGE") {
             console.log("zxv: " + exampleCollection);

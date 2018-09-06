@@ -39,6 +39,8 @@
              <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>	 
          </div>
         <br/>
+            <button class="button" ng-hide="temporary" ng-click="">Add to List</button>
+            <button class="button" ng-hide="temporary" ng-click="">New List</button>
     </ion-content>
     <!--  
   <ion-footer-bar align-title="center" class="bar-positive" style="height:56px">
@@ -65,5 +67,7 @@
         <div class="title" ng-click="gotoHowToPage();">
             <a class="button button-icon icon ion-ios-help"></a>
         </div>
+            <button class="button" ng-hide="!temporary" ng-click="">Add to List</button>
+            <button class="button" ng-hide="!temporary" ng-click="">New List</button>
     </ion-footer-bar>
 </ion-view>
