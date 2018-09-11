@@ -652,6 +652,134 @@ angular.module('ionicApp.controller', ['ngCordova'])
         var contentOCR_Text_Result = "";
         var scientific_names_list;
 
+        // submit text to GNRD to pull out scientific names, then add them to list
+        $scope.findNames = function () {
+            $ionicLoading.show({
+                template: '<ion-spinner icon="ios"></ion-spinner>GNRD is finding scientific names...'
+            });
+            // Working with Phylotastic WS to get Scientific names
+            var startTime_gnrd = new Date().getTime();
+            contentOCR_Text_Result = contentOCR_Text_Result.trim();
+            console.log("zxv: " + "Phylotastic - Submit Text to GNRD");
+            $http({
+                method: 'POST',
+                url: "https://gnrd.globalnames.org/name_finder.json",
+                //url: "http://phylo.cs.nmsu.edu:5004/phylotastic_ws/fn/names_text",
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                timeout: TIMEOUT_CONNECTION,
+                transformRequest: function (obj) {
+                    var str = [];
+                    for (var p in obj)
+                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                    return str.join("&");
+                },
+                data: {
+                    text: contentOCR_Text_Result,
+                    data_source_ids: 12
+                }
+            }).success(
+                function (data, status, headers, config) {
+                    $ionicLoading.hide();
+                    console.log("zxv: " + "success");
+                    console.log("zxv: " + "Phylotastic - GNRD results : " + JSON.stringify(data));
+                    if (!isEmpty(data)) {
+                        if (!isEmpty(data.names) && Object.prototype.toString.call(data.names) === '[object Array]'){
+                            var scientific_names_list = data.names;
+                            var eol_link_list = data.resolved_names;
+                        //if (!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]') {
+                            //scientific_names_list = data.scientificNames;
+                            if (scientific_names_list.length > 0) {
+
+                                // add to current_species_names_list 
+
+
+                                var cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
+
+                                for (var index = 0; index < scientific_names_list.length; index++) {
+                                    if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index].scientificName) == false) {
+                                        var new_species = {
+                                                "name": scientific_names_list[index].scientificName,
+                                                "eol": eol_link_list[index].results[0].url
+                                            };
+                                        add_species_to_collection(cur_collection, new_species); // add name to list if not already there
+
+                                    }
+                                }
+                                window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
+                                var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS")); // get list of list objs
+                                update_master_list(cur_collection, all_collections); // update list of list objs with new obj
+                                window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections)); // store list of list objs
+
+
+
+
+                                var message = "";
+                                if (scientific_names_list.length == 1) {
+                                    message = "Names added : " + scientific_names_list[0].scientificName;
+                                } else {
+                                    message = "Names added : " + scientific_names_list[0].scientificName + " and " + (scientific_names_list.length - 1) + " others";
+                                }
+
+                                var confirmPopup = $ionicPopup.alert({
+                                    title: 'Success !',
+                                    cssClass: 'custom-popup',
+                                    template: message
+                                });
+                                confirmPopup.then(function (res) {
+                                    confirmPopup.close();
+                                    $state.go("phylotastic.species_names_list_view");
+                                    return;
+                                });
+
+                            } else {
+
+                                var alertPopup = $ionicPopup.alert({
+                                    title: 'Oops !',
+                                    cssClass: 'custom-popup',
+                                    template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
+                                });
+                                return;
+                            }
+                        } else {
+                            //alert("Returned data from Web Service is in-valid structure or There is 0 scientific names can be found. Please check with Web Services admin");
+                            var alertPopup = $ionicPopup.alert({
+                                title: 'Oops !',
+                                cssClass: 'custom-popup',
+                                template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
+                            });
+                            return;
+                        }
+                    } else {
+                        //alert("No return data from Phylotastic Web Service and GNRD. Please check with Web Services admin");
+                        var alertPopup = $ionicPopup.alert({
+                            title: 'Phylotastic',
+                            cssClass: 'custom-popup',
+                            template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
+                        });
+                        return;
+                    }
+
+                }).error(function (err) {
+                $ionicLoading.hide();
+                console.log("zxv: " + err.error);
+                var respTime_gnrd = new Date().getTime() - startTime_gnrd;
+                if (respTime_gnrd >= TIMEOUT_CONNECTION) {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Oops!',
+                        cssClass: 'custom-popup',
+                        template: 'Sorry!  We did not get a response in 25 seconds.  Please wait and try again later.'
+                    });
+                } else {
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Phylotastic',
+                        cssClass: 'custom-popup',
+                        template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
+                    });
+                }
+            });              
+        };
 
         $scope.submitOCR = function () {
 
@@ -682,10 +810,12 @@ angular.module('ionicApp.controller', ['ngCordova'])
 							                ]
 							              }
 							            ]
-                    }
-
-                    var API_KEY = config.G_API_KEY;
+                    };
+                    
+                    var API_KEY = config.G_API_KEY;     // problem line
+                    console.log("zxv: " + "get api key");
                     gapi.client.setApiKey(API_KEY);
+                    console.log("zxv: " + "api key: " + API_KEY);
                     var restRequest = gapi.client.request({
                         'path': 'https://vision.googleapis.com/v1/images:annotate',
                         'method': 'POST',
@@ -734,6 +864,11 @@ angular.module('ionicApp.controller', ['ngCordova'])
                             });
                             return;
                         } else {
+                            
+                            // cut out to form own function //
+                            
+                            //$scope.findNames();
+                            
                             $ionicLoading.show({
                                 template: '<ion-spinner icon="ios"></ion-spinner>GNRD is finding scientific names...'
                             });
@@ -896,7 +1031,9 @@ angular.module('ionicApp.controller', ['ngCordova'])
                                         template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
                                     });
                                 }
-                            }); // End Request to GNRD
+                            }); 
+                            
+                            // End Request to GNRD
 
                         }
                     }, function (reason) {
@@ -928,7 +1065,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 }
             }
         };
-
+    
+    
         $scope.inPhotoLibrary = function () {
             var options_library = {
                 quality: 100,
@@ -946,6 +1084,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 .then(function (imageData) {
                     $scope.pictureURL = "data:image/jpeg;base64," + imageData;
                     finalImageData = imageData;
+                    //$scope.submitOCR();
                 }, function (error) {
                     console.log("zxv: " + "Camera error : " + angular.toJson(error));
                 });
@@ -970,6 +1109,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 .then(function (imageData) {
                     $scope.pictureURL = "data:image/jpeg;base64," + imageData;
                     finalImageData = imageData;
+                    //$scope.submitOCR();
                 }, function (error) {
                     console.log("zxv: " + "Camera error : " + angular.toJson(error));
                 });
@@ -988,6 +1128,14 @@ angular.module('ionicApp.controller', ['ngCordova'])
         $scope.gotoHowToPage = function () {
             $state.go("phylotastic.how_to_page");
         };
+    
+        /*
+        if (cam){
+            $scope.takePicture();
+        } else if (photo){
+            $scope.inPhotoLibrary();
+        }
+        */
     })
     /****************************************/
     /** How_To_Page_Ctrl Controller **/
@@ -1017,6 +1165,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /** Home_Page_Ctrl Controller **/
     /****************************************/
     .controller('Home_Page_Ctrl', function ($scope, $state, $http, $ionicLoading, $ionicPopup) {
+
         console.log("zxv: " + "Home Page Controller");
 
         //console.log("zxv: " + $state);
