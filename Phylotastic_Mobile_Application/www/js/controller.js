@@ -88,6 +88,15 @@ angular.module('ionicApp.controller', ['ngCordova'])
         //console.log("zxv: " + "parsed: " + cur_species_list_object);
         /* Action in Page */
         $scope.gotoCamera = function () {
+            window.localStorage.setItem(("CAPTURE_MODE", "CAMERA"));
+            $state.go("phylotastic.image_view");
+        };
+        $scope.gotoAlbum = function () {
+            window.localStorage.setItem(("CAPTURE_MODE", "ALBUM"));
+            $state.go("phylotastic.image_view");
+        };
+        $scope.gotoText = function () {
+            window.localStorage.setItem(("CAPTURE_MODE", "TEXT"));
             $state.go("phylotastic.image_view");
         };
         $scope.gotoHome = function () {
@@ -301,6 +310,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         var myPopup;
         /* Activity */
         $scope.gotoCamera = function () {
+            window.localStorage.setItem(("CAPTURE_MODE", "CAMERA"));
             $state.go("phylotastic.image_view");
         };
         $scope.gotoHome = function () {
@@ -640,6 +650,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         //console.log("zxv: " + window.localStorage.getItem("current_species_names_list"));
         //console.log("zxv: " + window.localStorage.getItem("currect_species_list_object"));
     
+        
         var photo_data = JSON.parse(window.localStorage.getItem("current_photo_data_phylotastic"));
         var email = window.localStorage.getItem('current_email_phylotastic');
         if (!isEmpty(photo_data)) {
@@ -1164,7 +1175,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /****************************************/
     /** Home_Page_Ctrl Controller **/
     /****************************************/
-    .controller('Home_Page_Ctrl', function ($scope, $state, $http, $ionicLoading, $ionicPopup) {
+    .controller('Home_Page_Ctrl', function ($scope, $state, $http, $ionicLoading, $ionicPopup, $ionicPopover) {
 
         console.log("zxv: " + "Home Page Controller");
 
@@ -1198,33 +1209,42 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 }]
         };
     /**/
+    
+    var popoverTemplate = '<ion-popover-view class="my-popover"><div class="list"><a class="item" ng-click="addNewMasterList();">New List</a><a class="item" ng-click="gotoHowToPage();">Help</a></div></ion-popover-view>';
+    $scope.popover = $ionicPopover.fromTemplate(popoverTemplate, {
+            scope: $scope
+          });
         /** Activity **/
+        $scope.$on('$destroy', function() {
+            $scope.popover.remove();
+          });
+        
         $scope.gotoHome = function () {
             console.log("zxv: " + "Di home");
             $state.go("phylotastic.home_page");
         };
-
-        $scope.gotoCamera = function () {
-            console.log("zxv: " + "Tam khoa di Camera");
-            $state.go("phylotastic.image_view");
-            //alert("Please seclect a list you want to store new species names !");
-            /*
-        $ionicPopup.alert({
-		     title: 'Oops !',
-		     template: 'Please seclect a list, before trying to capture names !',
-		     cssClass: 'custom-popup'
-	    });
         
-    	return;
-        */
+        $scope.gotoCamera = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "CAMERA");
+            $state.go("phylotastic.image_view");
         };
-
+        $scope.gotoAlbum = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "ALBUM");
+            $state.go("phylotastic.image_view");
+        };
+        $scope.gotoText = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "TEXT");
+            $state.go("phylotastic.image_view");
+        };
+    
         $scope.gotoHowToPage = function () {
+            $scope.popover.hide();
             $state.go("phylotastic.how_to_page");
         };
 
         //
         $scope.addNewMasterList = function () {
+            $scope.popover.hide();
             console.log("zxv: " + "new master list");
             $scope.data = {};
 
@@ -1241,7 +1261,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                     },
                     {
                         text: '<b>Save</b>',
-                        type: 'button-positive',
+                        type: 'button-balanced',
                         onTap: function (e) {
                         /*
                             if (!$scope.data.new_species_list_object_name) {
