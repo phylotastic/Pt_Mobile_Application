@@ -1,26 +1,33 @@
 <link href="css/common.css" rel="stylesheet">
-<ion-view  view-title="" hide-back-button="false" cache-view="false">
- <ion-nav-title>
-      <h1 class="title"></h1>
-  </ion-nav-title>
-<ion-nav-buttons side="right" style="color: grey;">
-	<!--<a class="button button-icon ion-ios-play" ui-sref="phylotastic.species_names_list_view">&nbsp;<b>View list</b></a>-->
-</ion-nav-buttons>
+<ion-view view-title="" hide-back-button="false" cache-view="false">
+    <ion-nav-title>
+        {{capture_mode}}
+    </ion-nav-title>
+    <ion-nav-buttons side="right" style="color: grey;">
+        <button class="button button-icon ion-more" ng-click="popover.show($event)"></button>
+    </ion-nav-buttons>
 
-<ion-content class="padding" overflow-scroll="true">
-    <div class="padding" align="center">
-       <br/>
-       <img ng-src="{{pictureURL}}" style="width:100%;height:50%">
-       <br/>
-       <button ng-click="takePicture();" 
-         class="button button-block button-positive"><i class="icon ion-camera"></i>&nbsp;Take Photo</button>
-       <button ng-click="inPhotoLibrary();" 
-         class="button button-block button-positive"><i class="icon ion-ios-folder"></i>&nbsp;Photo Library</button>
-        <button ng-click="submitOCR();" 
-         class="button button-block button-positive"><i class="icon ion-ios-cog"></i>&nbsp;Use this image</button>  
-    </div>
-</ion-content>
-<!-- 
+    <ion-content class="padding" overflow-scroll="true">
+        <div class="padding" align="center">
+            <img ng-hide="!(capture_mode=='CAMERA'||capture_mode=='ALBUM')" ng-src="{{pictureURL}}" style="width:100%;height:50%">
+            <div class="list" ng-hide="!(capture_mode=='TEXT')">
+                <label class="item item-input">
+                    <textarea rows="8" placeholder="paste or type in text" ng-model="input.text"></textarea>
+                </label>
+            </div>
+            <br/>
+            <button-bar>
+                <button ng-click="submitText();" ng-hide="!(capture_mode=='TEXT')"class="button button-balanced">Submit</button>
+                <button ng-click="takePicture();" ng-hide="!(capture_mode=='CAMERA')"class="button button-balanced">Retake</button>
+                <button ng-click="inPhotoLibrary();" ng-hide="!(capture_mode=='ALBUM')"class="button button-balanced">Album</button>
+                <button ng-click="gotoList();" class="button button-outline button-balanced">List ></button>
+            </button-bar>
+            <!--<button ng-click="takePicture();" class="button button-block button-positive"><i class="icon ion-camera"></i>&nbsp;Take Photo</button>
+            <button ng-click="inPhotoLibrary();" class="button button-block button-positive"><i class="icon ion-ios-folder"></i>&nbsp;Photo Library</button>
+            <button ng-click="submitOCR();" class="button button-block button-positive"><i class="icon ion-ios-cog"></i>&nbsp;Use this image</button>-->
+        </div>
+    </ion-content>
+    <!-- 
 <ion-footer-bar align-title="center" class="bar-positive" style="height:56px">
 		  <div class="buttons" ng-click="gotoHome();">
 		      <a class="button button-icon icon ion-home" style="height:55px;">&nbsp;Home</a>
@@ -34,16 +41,11 @@
 		  </div>
 </ion-footer-bar>
  -->
- <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
-		  <div class="buttons" ng-click="gotoHome();">
-		     <a class="button button-icon icon ion-home"></a>
-		  </div>
-		  <h1 class="title"></h1>  
-		  <div  class="buttons" ng-click="gotoCamera();">
-		      <a class="button button-icon icon ion-ios-camera"></a>
-		  </div>
-		  <div class="title" ng-click="gotoHowToPage();">
-		      <a class="button button-icon icon ion-ios-help"></a>
-		  </div>
-   </ion-footer-bar>
+    <ion-footer-bar class="bar-balanced">
+        <button class="button-icon icon ion-images" ng-click="gotoAlbum();"></button>
+        <button class="button-icon text-button" ng-click="gotoText();">T</button>
+    </ion-footer-bar>
+    <div class="center-bottom">
+        <button class="button button-dark round-button icon ion-camera" ng-click="gotoCamera();"></button>
+    </div>
 </ion-view>

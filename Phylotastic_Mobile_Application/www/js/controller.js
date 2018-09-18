@@ -65,7 +65,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /****************************************/
     /** Species_Names_List_View_Ctrl Controller **/
     /****************************************/
-    .controller('Species_Names_List_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout) {
+    .controller('Species_Names_List_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout, $ionicPopover) {
         console.log("zxv: " + "View Species Names List");
         /* Global variable */
         //var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
@@ -86,17 +86,25 @@ angular.module('ionicApp.controller', ['ngCordova'])
         //console.log("zxv: " + "local storage: " + window.localStorage.getItem("currect_species_list_object"));
         //console.log("zxv: " + cur_species_names_list);
         //console.log("zxv: " + "parsed: " + cur_species_list_object);
+        var popoverTemplate = '<ion-popover-view class="my-popover"><div class="list"><a class="item" ng-click="build_view_tree();">Get Tree</a><a class="item" ng-click="gotoHowToPage();">Help</a></div></ion-popover-view>';
+        $scope.popover = $ionicPopover.fromTemplate(popoverTemplate, {
+            scope: $scope
+          });
+        /** Activity **/
+        $scope.$on('$destroy', function() {
+            $scope.popover.remove();
+          });
         /* Action in Page */
         $scope.gotoCamera = function () {
-            window.localStorage.setItem(("CAPTURE_MODE", "CAMERA"));
+            window.localStorage.setItem("CAPTURE_MODE", "CAMERA");
             $state.go("phylotastic.image_view");
         };
         $scope.gotoAlbum = function () {
-            window.localStorage.setItem(("CAPTURE_MODE", "ALBUM"));
+            window.localStorage.setItem("CAPTURE_MODE", "ALBUM");
             $state.go("phylotastic.image_view");
         };
         $scope.gotoText = function () {
-            window.localStorage.setItem(("CAPTURE_MODE", "TEXT"));
+            window.localStorage.setItem("CAPTURE_MODE", "TEXT");
             $state.go("phylotastic.image_view");
         };
         $scope.gotoHome = function () {
@@ -280,7 +288,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /****************************************/
     /** Tree_View_Ctrl Controller **/
     /****************************************/
-    .controller('Tree_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout) {
+    .controller('Tree_View_Ctrl', function ($scope, $state, $ionicLoading, $http, $ionicPopup, $timeout, $ionicPopover) {
         console.log("zxv: " + "Tree View Controller");
         /* Global variable */
         //var cur_species_names_list = JSON.parse(window.localStorage.getItem("current_species_names_list"));
@@ -308,6 +316,11 @@ angular.module('ionicApp.controller', ['ngCordova'])
         }
         var global_tree_data = "";
         var myPopup;
+    
+        var popoverTemplate = '<ion-popover-view class="my-popover"><div class="list"><a class="item" ng-click="gotoHowToPage();">Help</a></div></ion-popover-view>';
+        $scope.popover = $ionicPopover.fromTemplate(popoverTemplate, {
+            scope: $scope
+          });
         /* Activity */
         $scope.gotoCamera = function () {
             window.localStorage.setItem(("CAPTURE_MODE", "CAMERA"));
@@ -320,6 +333,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         $scope.gotoHowToPage = function () {
             $state.go("phylotastic.how_to_page");
         };
+    
         $scope.export_tree = function () {
             if (!isEmpty(global_tree_data)) {
                 myPopup = $ionicPopup.show({
@@ -645,14 +659,15 @@ angular.module('ionicApp.controller', ['ngCordova'])
     /****************************************/
     /** Image_View_Ctrl Controller **/
     /****************************************/
-    .controller('Image_View_Ctrl', function ($scope, $state, $http, $ionicLoading, $cordovaCamera, $ionicPopup, $timeout) {
+    .controller('Image_View_Ctrl', function ($scope, $state, $http, $ionicLoading, $cordovaCamera, $ionicPopup, $timeout, $ionicPopover) {
         console.log("zxv: " + "Image View Controller");
         //console.log("zxv: " + window.localStorage.getItem("current_species_names_list"));
         //console.log("zxv: " + window.localStorage.getItem("currect_species_list_object"));
     
-        
         var photo_data = JSON.parse(window.localStorage.getItem("current_photo_data_phylotastic"));
         var email = window.localStorage.getItem('current_email_phylotastic');
+        $scope.input = {text:''};
+        $scope.cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
         if (!isEmpty(photo_data)) {
             $scope.pictureURL = photo_data;
         } else {
@@ -662,7 +677,15 @@ angular.module('ionicApp.controller', ['ngCordova'])
         var finalImageData = "";
         var contentOCR_Text_Result = "";
         var scientific_names_list;
-
+    
+        var popoverTemplate = '<ion-popover-view class="my-popover"><div class="list"><a class="item" ng-click="gotoHowToPage();">Help</a></div></ion-popover-view>';
+        $scope.popover = $ionicPopover.fromTemplate(popoverTemplate, {
+            scope: $scope
+          });
+        /** Activity **/
+        $scope.$on('$destroy', function() {
+            $scope.popover.remove();
+          });
         // submit text to GNRD to pull out scientific names, then add them to list
         $scope.findNames = function () {
             $ionicLoading.show({
@@ -671,6 +694,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
             // Working with Phylotastic WS to get Scientific names
             var startTime_gnrd = new Date().getTime();
             contentOCR_Text_Result = contentOCR_Text_Result.trim();
+            console.log("zxv: " + "trimmed: " + contentOCR_Text_Result);
             console.log("zxv: " + "Phylotastic - Submit Text to GNRD");
             $http({
                 method: 'POST',
@@ -697,25 +721,30 @@ angular.module('ionicApp.controller', ['ngCordova'])
                     console.log("zxv: " + "Phylotastic - GNRD results : " + JSON.stringify(data));
                     if (!isEmpty(data)) {
                         if (!isEmpty(data.names) && Object.prototype.toString.call(data.names) === '[object Array]'){
-                            var scientific_names_list = data.names;
                             var eol_link_list = data.resolved_names;
+                            console.log(eol_link_list);
                         //if (!isEmpty(data.scientificNames) && Object.prototype.toString.call(data.scientificNames) === '[object Array]') {
                             //scientific_names_list = data.scientificNames;
-                            if (scientific_names_list.length > 0) {
+                            if (eol_link_list.length > 0) {
 
                                 // add to current_species_names_list 
 
 
                                 var cur_collection = JSON.parse(window.localStorage.getItem("current_collection")); // get current list from local storage
 
-                                for (var index = 0; index < scientific_names_list.length; index++) {
-                                    if (check_exits_name_in_list(cur_collection.species, scientific_names_list[index].scientificName) == false) {
-                                        var new_species = {
-                                                "name": scientific_names_list[index].scientificName,
-                                                "eol": eol_link_list[index].results[0].url
-                                            };
-                                        add_species_to_collection(cur_collection, new_species); // add name to list if not already there
+                                for (var index = 0; index < eol_link_list.length; index++) {
+                                    console.log(index);
+                                    console.log(eol_link_list[index]);
+                                    if (check_exits_name_in_list(cur_collection.species, eol_link_list[index].supplied_name_string) == false) {
+                                        if(eol_link_list[index].hasOwnProperty('results')){
+                                            var new_species = {
+                                                    "name": eol_link_list[index].supplied_name_string,
+                                                    "eol": eol_link_list[index].results[0].url
+                                                };
 
+                                            add_species_to_collection(cur_collection, new_species); // add name to list if not already there
+
+                                        }
                                     }
                                 }
                                 window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
@@ -727,10 +756,10 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
 
                                 var message = "";
-                                if (scientific_names_list.length == 1) {
-                                    message = "Names added : " + scientific_names_list[0].scientificName;
+                                if (eol_link_list.length == 1) {
+                                    message = "Names added : " + eol_link_list[0].supplied_name_string;
                                 } else {
-                                    message = "Names added : " + scientific_names_list[0].scientificName + " and " + (scientific_names_list.length - 1) + " others";
+                                    message = "Names added : " + eol_link_list[0].supplied_name_string + " and " + (eol_link_list.length - 1) + " others";
                                 }
 
                                 var confirmPopup = $ionicPopup.alert({
@@ -789,7 +818,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
                         template: 'No scientific name was found. Please try again. The Help page has tips on getting good photos.'
                     });
                 }
-            });              
+            });
+            console.log("zxv: " + "hmm");
         };
 
         $scope.submitOCR = function () {
@@ -1095,7 +1125,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 .then(function (imageData) {
                     $scope.pictureURL = "data:image/jpeg;base64," + imageData;
                     finalImageData = imageData;
-                    //$scope.submitOCR();
+                    $scope.submitOCR();
                 }, function (error) {
                     console.log("zxv: " + "Camera error : " + angular.toJson(error));
                 });
@@ -1120,33 +1150,61 @@ angular.module('ionicApp.controller', ['ngCordova'])
                 .then(function (imageData) {
                     $scope.pictureURL = "data:image/jpeg;base64," + imageData;
                     finalImageData = imageData;
-                    //$scope.submitOCR();
+                    $scope.submitOCR();
                 }, function (error) {
                     console.log("zxv: " + "Camera error : " + angular.toJson(error));
                 });
         };
-
+        
+        $scope.submitText = function () {
+             console.log("zxv: " + "input_text: " + $scope.input.text);
+            if($scope.input.text == ''){
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Phylotastic',
+                    cssClass: 'custom-popup',
+                    template: 'Please type or paste text in'
+                });
+            } else {
+                contentOCR_Text_Result = $scope.input.text;
+                console.log("zxv: " + "input_text: " + contentOCR_Text_Result);
+                $scope.findNames();
+            }
+        };
         /** Activity **/
+        $scope.gotoCamera = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "CAMERA");
+            $state.reload();//go("phylotastic.image_view");
+        };
+        $scope.gotoAlbum = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "ALBUM");
+            $state.reload();//go("phylotastic.image_view");
+        };
+        $scope.gotoText = function () {
+            window.localStorage.setItem("CAPTURE_MODE", "TEXT");
+            $state.reload();//go("phylotastic.image_view");
+        };
+    
         $scope.gotoHome = function () {
             window.localStorage.setItem("PREVIOUS_PAGE_PHYLOTASTIC", "IMAGE_VIEW");
             $state.go("phylotastic.home_page");
         };
-
-        $scope.gotoCamera = function () {
-            $state.go("phylotastic.image_view");
+    
+        $scope.gotoList = function () {
+            $state.go("phylotastic.species_names_list_view");
         };
-
+    
         $scope.gotoHowToPage = function () {
             $state.go("phylotastic.how_to_page");
         };
     
-        /*
-        if (cam){
+        
+        $scope.capture_mode = window.localStorage.getItem("CAPTURE_MODE");
+        if ($scope.capture_mode === "CAMERA"){
             $scope.takePicture();
-        } else if (photo){
+        } else if ($scope.capture_mode ==="ALBUM"){
             $scope.inPhotoLibrary();
         }
-        */
+        
     })
     /****************************************/
     /** How_To_Page_Ctrl Controller **/

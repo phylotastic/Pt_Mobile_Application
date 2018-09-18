@@ -1,13 +1,17 @@
 <link href="css/common.css" rel="stylesheet">
 <ion-view hide-back-button="false" cache-view="false">
     <ion-nav-title>
-
+        {{collection_name}}
     </ion-nav-title>
+      <ion-nav-buttons side="right" style="color: grey;">
+        <button class="button button-icon ion-more" ng-click="popover.show($event)"></button>
+	 </ion-nav-buttons>  
+    <!--
     <ion-nav-buttons side="right" style="color: grey;">
         <a class="button button-icon icon ion-ios-eye" ng-click="build_view_tree();">Get Tree</a>
         <a class="button button-icon icon ion-ios-loop-strong" ui-sref="phylotastic.home_page">Switch List</a>
         <a class="button button-icon ion-plus-round" ng-click="addSpecies();"></a>
-    </ion-nav-buttons>
+    </ion-nav-buttons> -->
     <ion-content class="padding common-body" overflow-scroll="true">
         <br/>
         <!--
@@ -39,8 +43,6 @@
              <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>	 
          </div>
         <br/>
-            <button class="button" ng-hide="temporary" ng-click="">Add to List</button>
-            <button class="button" ng-hide="temporary" ng-click="">New List</button>
     </ion-content>
     <!--  
   <ion-footer-bar align-title="center" class="bar-positive" style="height:56px">
@@ -56,16 +58,11 @@
 		  </div>
     </ion-footer-bar>
     -->
-    <ion-footer-bar align-title="center" class="bar-positive" style="height:50px">
-        <div class="buttons" ng-click="gotoHome();">
-            <a class="button button-icon icon ion-home"></a>
-        </div>
-        <h1 class="title"></h1>
-        <div class="buttons" ng-click="gotoCamera();">
-            <a class="button button-icon icon ion-ios-camera"></a>
-        </div>
-        <div class="title" ng-click="gotoHowToPage();">
-            <a class="button button-icon icon ion-ios-help"></a>
-        </div>
+    <ion-footer-bar class="bar-balanced">
+      <button class="button-icon icon ion-images" ng-click="gotoAlbum();"></button>
+      <button class="button-icon text-button" ng-click="gotoText();">T</button>
     </ion-footer-bar>
+    <div class="center-bottom">
+      <button class="button button-dark round-button icon ion-camera" ng-click="gotoCamera();"></button>
+    </div>
 </ion-view>
