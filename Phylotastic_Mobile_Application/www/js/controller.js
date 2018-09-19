@@ -76,7 +76,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
         $scope.collection_name = cur_collection.name;
         $scope.species_list = cur_collection.species;
         $scope.temporary = window.localStorage.getItem("temporary_list");
-    
+        console.log("zxv: " + "temporary: " + $scope.temporary);
         var email = window.localStorage.getItem('current_email_phylotastic');
         /* List data in list */
         //$scope.species_names_list = cur_species_names_list;
@@ -129,6 +129,54 @@ angular.module('ionicApp.controller', ['ngCordova'])
 
         };
     
+        $scope.saveList = function () {
+            $scope.data = {};
+
+            // An elaborate, custom popup
+            var myPopup = $ionicPopup.show({
+                template: '<input type="text" ng-model="data.new_list">',
+                title: 'Enter list name',
+                cssClass: 'custom-popup',
+                scope: $scope,
+                buttons: [
+                    {
+                        text: 'Cancel'
+                    },
+                    {
+                        text: '<b>Save</b>',
+                        type: 'button-balanced',
+                        onTap: function (e) {
+                            if (!$scope.data.new_list) {
+                                return;
+                            } else {
+                                var all_collections = JSON.parse(window.localStorage.getItem(email + "_" + "COLLECTIONS")); // get list of list objs
+                                
+                                var maximum_id = getMaxID(all_collections);
+                                d = new Date();
+                                var current_date = d.yyyymmdd();
+                                
+                                cur_collection.id = maximum_id + 1;
+                                cur_collection.name = $scope.data.new_list.trim();
+                                cur_collection.date = current_date;
+                                
+                                window.localStorage.setItem("current_collection", JSON.stringify(cur_collection)); // store obj back into local storage
+                                
+                                all_collections.push(cur_collection);
+                                window.localStorage.setItem(email + "_" + "COLLECTIONS", JSON.stringify(all_collections));
+                                
+                                console.log("zxv: " + "collection added");
+                                
+                                window.localStorage.setItem("temporary_list", false);
+                                $state.reload();
+                            }
+                        }
+                    }
+    		    ]
+            });
+        };
+    
+        // replaced by text input through image view
+    /*
         $scope.addSpecies = function () {
             console.log("zxv: " + "new species");
             
@@ -170,6 +218,7 @@ angular.module('ionicApp.controller', ['ngCordova'])
     		    ]
             });
         };
+        */
 
         $scope.selectSpeciesName = function (species) {
             /*
@@ -1444,8 +1493,8 @@ angular.module('ionicApp.controller', ['ngCordova'])
     */
     /**/
         $scope.selectSpeciesList = function (collection) {
-            window.localStorage.setItem("current_collection", JSON.stringify(collection)); // store object of list in local storage
             window.localStorage.setItem("temporary_list", false);
+            window.localStorage.setItem("current_collection", JSON.stringify(collection)); // store object of list in local storage
             $state.go("phylotastic.species_names_list_view");
         };
     /**/

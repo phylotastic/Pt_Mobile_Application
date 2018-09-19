@@ -1,5 +1,10 @@
 <link href="css/common.css" rel="stylesheet">
 <ion-view hide-back-button="false" cache-view="false">
+    <!--
+    <ion-nav-buttons side="left" ng-click="gotoHome();">
+            <button class="button button-icon icon ion-home" ng-click="gotoHome();"></button>
+    </ion-nav-buttons>
+-->
     <ion-nav-title>
         {{collection_name}}
     </ion-nav-title>
@@ -29,6 +34,9 @@
             <div class="item item-input">See&nbsp;<a ui-sref="phylotastic.how_to_page"> How To </a>&nbsp;for how to add names.</div>
         </div>
         -->
+        <div ng-hide="temporary=='false'" class="padding" align="center">
+            <button ng-click="saveList();" class="button button-balanced">Save</button>
+        </div>
           <div ng-hide="!species_list.length"  style="margin-top: 20px; margin-left:10px; margin-right:10px">
              <ion-list>
                    <ion-item ng-repeat="species in species_list track by $index" ng-click="selectSpeciesName(species)" style="vertical-align: middle">
