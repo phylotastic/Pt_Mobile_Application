@@ -1,0 +1,18 @@
+Species are now stored as objects instead of strings. Currently they store name and an EOL link, but common name, tree data, image are all things that could be added.
+
+EOL links are gathered along with the initial scientific name lookup. Currently any names with no corresponding EOL page are thrown out to help filter out false positives.
+
+The OCR and the scientific name lookup are now divided into two functions for the sake of text input.
+
+The bottom bar contains all capture options and nothing else. Album and camera automatically try to open their respective services.
+
+The upper right menu contains the help page and any page-specific options that don't deserve a seperate button. They are stored in the controller for each page as a string containing the html elements.
+
+The export tree function has no ui element because it doesn't work. If fixed, it would go under the upper right menu on the tree page. The tree view itself also has display issues on android at least that I didn't figure out.
+
+A temporary list is created when a capture option is used with no list selected. This list is destroyed if the user goes back to the home screen. It can currently be saved into a new list, but adding it to an existing list would be a good feature.
+
+Navigation is mostly handled through the back button and page-specific links. This could be a problem if a user somehow finds a way to a page without having come from a previous one, since there are no ui links to go home.
+
+a google api key must be placed in a config.js file in the www/js folder inside an object named config.
+var config = {G_API_KEY : [api key here]}
